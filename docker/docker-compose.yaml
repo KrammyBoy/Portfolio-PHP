@@ -1,0 +1,58 @@
+networks:
+  app-net:
+    driver: bridge
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: dockerfile
+    container_name: Portfolio-app
+    restart: always
+    working_dir: /var/www
+    volumes:
+      - ../src:/var/www
+    networks:
+      - app-net
+  nginx:
+    image: nginx:1.29-alpine
+    container_name: Portfolio-nginx
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ../src:/var/www
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - app-net
+  db-pgsql:
+    image: bitnami/postgresql:17.5.0
+    container_name: Portfolio-postgresql
+    volumes: 
+    - ./storage/pgsql:/bitnami/postgresql
+    restart: always
+    environment:
+    - POSTGRESQL_USERNAME=mark
+    - POSTGRESQL_PASSWORD=root
+    - POSTGRESQL_DATABASE=portfolio_db
+    networks:
+    - app-net
+  pgadmin:
+    image: dpage/pgadmin4:9.6.0
+    container_name: Portfolio-pgadmin
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    volumes:
+      - ./pgadmin/pgadmin_data:/var/lib/pgadmin
+    networks:
+      - app-net
+    depends_on:
+      - db-pgsql
+
+
+
