@@ -1,0 +1,76 @@
+<?php 
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use PDO;
+
+/**
+ * Class Projects
+ *
+ * Represents the `Projects` table in the database.
+ *
+ * Table Columns:
+ * - id (INT) - Primary key
+ * - title (VARCHAR[48]) NOT NULL
+ * - description (VARCHAR[255]) NOT NULL
+ * - image TEXT
+ * - live_url TEXT
+ * - repo_url TEXT
+ * - status_id (INT) NOT NULL - Foreign key referencing `Status` table 
+ * - deleted_at (TIMESTAMP) - Nullable, used for soft deletion
+ */
+
+class Projects {
+
+    private $pdo;
+
+    private int $id;
+    private String $title;
+    private string $description;
+
+    /**
+     * @var string Relative path to the project image stored in /public/assets/images
+     */
+    private string $image;
+    private string $live_url;
+    private string $repo_url;
+    private int $status_id;
+    private \DateTime|null $deleted_at;
+
+
+    public function __construct() {
+        // Initialize the DBContext instance
+        $this->pdo = DBContext::getInstance()->getConnection();
+
+    }
+    // Get DB;
+    public function getProjects(): array {
+        $query = "SELECT * FROM Projects";
+        $stmt = $this->pdo->prepare($query);
+        
+        $stmt->execute();
+        return $stmt->fetchAll();
+
+    }
+
+    // Insert methods
+    public function insertProject(
+        String $title, 
+        String $description, 
+        int $status_id,
+        String $image = null, 
+        String $live_url = null, 
+        String $repo_url = null, 
+    ): void {
+        if (strlen($title) > 48 || strlen($description) > 255) {
+            throw new \InvalidArgumentException("Title must be less than 48 characters and description must be less than 255 characters.");
+        }
+        
+
+        // Additional validation for URLs and image path can be added here
+    }
+}
+
+?>

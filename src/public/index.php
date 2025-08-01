@@ -9,13 +9,17 @@ use App\Controllers\ExperienceController;
 use App\Controllers\TechnologiesController;
 use App\Controllers\ContactController;
 use App\Controllers\Router;
+use Dotenv\Dotenv;
 
 
 //PSR Autolaoading
 require __DIR__ . '/../vendor/autoload.php';
 
-$router = new Router();
 
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+$router = new Router();
 $router->get('/', [HomeController::class, 'index'])
         ->get('/projects', [ProjectsController::class, 'index'])
         ->get('/certifications', [CertificationController::class, 'index'])

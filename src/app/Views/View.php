@@ -13,7 +13,6 @@ class View {
             throw new \Exception("500 Page not found");
         }
 
-        
         extract($data);
         require $viewPath;
     } 

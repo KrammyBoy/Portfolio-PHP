@@ -21,6 +21,11 @@ body {
   overflow-x: hidden;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* Header */
 .header {
   position: relative;
@@ -341,6 +346,8 @@ h1::after {
 .project-content {
   padding: 1.5rem;
 }
+
+
 .projectEach h3 {
   color: var(--primary-bg);
   font-size: 1.4rem;
@@ -352,7 +359,7 @@ h1::after {
 .projectEach p {
   color: var(--text-color);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   font-size: 0.95rem;
   opacity: 0.8;
 }
@@ -383,6 +390,7 @@ h1::after {
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1.1rem;
+  margin-bottom: 0.5rem;
 }
 
 .bx-send {
@@ -406,39 +414,38 @@ h1::after {
 }
 .technologies {
   display: flex;
-  gap: 0.5rem;
   flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .technologies i {
-  width: 32px;
-  height: 32px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.bx-php {
-  background: #777bb4;
+  background: var(--primary-btn);
   color: white;
+  transition: transform 0.3s ease;
+  gap: 0.5rem;
+  line-height: 1;
 }
 
-.bx-html5 {
-  background: #e34f26;
+.technologies i::before {
+  font-size: 1.2rem; 
+  display: flex;
+  align-items: center;
+}
+
+.technologies span {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.technologies i {
+  background: var(--primary-btn);
   color: white;
-}
 
-.bx-css3 {
-  background: #1572b6;
-  color: white;
-}
-
-.bx-javascript {
-  background: #f7df1e;
-  color: #333;
 }
 
 .technologies i:hover {
@@ -709,23 +716,28 @@ h1::after {
 }
 
 .social-link {
+  text-decoration: none;;
+}
+
+
+.social-link i {
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   width: 40px;
   height: 40px;
-  background: black;
+  background: var(--text-color);
   border-radius: 50%;
   text-decoration: none;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--text-color);
   font-size: 0.9rem;
 }
 
 
-.social-link:hover {
+.social-link i:hover {
   background: var(--btn-hover);
   transform: translateY(-2px);
 }
@@ -750,6 +762,61 @@ h1::after {
     transparent 70%
   );
   border-radius: 50%;
+}
+
+/* Projects */
+.projects h1{
+  position: relative;
+  bottom: 2rem;
+  transform: translateY(-50%);
+  color: var(--base-bg);
+}
+
+.project-container-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem; 
+}
+
+.project-card{
+  background-color: var(--text-color);
+  border-radius: 1rem;
+
+}
+
+.information-project {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0.5rem;
+  text-align: left;
+  padding: 0 2rem 0 2rem;
+}
+
+.information-project h3 {
+  color: var(--primary-bg);
+  width: 50%;
+  background-color: var(--section-bg);
+  align-self: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.information-project h3:hover{
+  background-color: var(--primary-btn);
+  color: var(--base-bg);
+  cursor: pointer;
+}
+
+
+.information-project span {
+  color: green;
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
 /* Responsive Design */

@@ -1,3 +1,11 @@
+<?php 
+declare(strict_types= 1);
+
+use App\Models\Projects;
+use App\Models\ProjectTechnologies;
+
+$projects = (new Projects())->getProjects();
+?>
     <div class="home">
         <div class="image-container wave curve">
             <img src="image.jpg" alt="Profile Picture" class="profile-image"/>
@@ -6,29 +14,50 @@
             <h1>Projects</h1>
             <div class="projects-container">
                 <!-- Project 1 -->
+                <?php foreach($projects as $project):?>
                 <div class="projectEach">
-                    <div class="project-image"></div>
+                    <div class="project-image">
+                        <?php if (!empty($project['image'])): ?>
+                            <img src="<?= htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>"/>
+                        <?php endif; ?>
+                    </div>
                     <div class="project-content">
-                        <h3>E-Commerce Platform</h3>
-                        <p>A modern e-commerce solution built with PHP and JavaScript. Features include user authentication, payment integration, inventory management, and responsive design for optimal shopping experience across all devices.</p>
+                        <h3><?= htmlspecialchars($project['title'])?></h3>
+                        <p><?= htmlspecialchars($project['description']) ?></p>
+                        <div class="action-buttons">
+                            <?php if(!empty($project['live_url'])): ?>
+                                <a href="<?= htmlspecialchars($project['live_url'])?>" target="_blank"><i class='bx bx-send' data-tooltip="Link"></i></a>
+                            <?php endif; ?>
+                            <?php if(!empty($project['repo_url'])): ?>
+                                <a href="<?= htmlspecialchars($project['repo_url'])?>" target="_blank"><i class='bxl bx-github' data-tooltip="Github"></i></a>
+                            <?php endif; ?>                              
+                        </div>                        
                         <div class="moreInfo">
-                            <div class="action-buttons">
-                                <a href="#"><i class='bx bx-send' data-tooltip="Link"></i></a>
-                                <a href="#"><i class='bxl bx-github' data-tooltip="Github"></i></a>
-                            </div>
                             <div class="technologies">
-                                <i class='bxl bx-php'></i>
-                                <i class='bxl bx-html5'></i>
-                                <i class='bxl bx-css3'></i>
-                                <i class='bxl bx-javascript'></i>
+                                <?php 
+                                    $projectTechnologies = (new ProjectTechnologies())->getById($project['id']);
+
+                                    foreach ($projectTechnologies as $tech): 
+                                ?>
+
+                                    <i class='<?= htmlspecialchars($tech['boxicon'])?>'><span><?= htmlspecialchars($tech['technology_name'])?></span></i>
+                                <?php endforeach; ?>
                             </div>
                             <div class="status">
                                 <div class="status-circle"></div>
-                                <span>Active</span>
+                                <span>
+                                    <?= match($project['status_id']) {
+                                        1 => 'Completed',
+                                        2 => 'In Progress',
+                                        3 => 'Abandoned',
+                                        default => 'Unknown'
+                                    } ?>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
 
                 <!-- Project 2 -->
                 <div class="projectEach">
@@ -49,30 +78,6 @@
                             <div class="status">
                                 <div class="status-circle"></div>
                                 <span>Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="projectEach">
-                    <div class="project-image"></div>
-                    <div class="project-content">
-                        <h3>Portfolio Website</h3>
-                        <p>A responsive portfolio website showcasing creative projects and professional experience. Features smooth animations, dark mode toggle, and optimized performance for fast loading times.</p>
-                        <div class="moreInfo">
-                            <div class="action-buttons">
-                                <i class='bx bx-send'></i>
-                                <i class='bxl bx-github'></i>
-                            </div>
-                            <div class="technologies">
-                                <i class='bxl bx-html5'></i>
-                                <i class='bxl bx-css3'></i>
-                                <i class='bxl bx-javascript'></i>
-                            </div>
-                            <div class="status">
-                                <div class="status-circle"></div>
-                                <span>Live</span>
                             </div>
                         </div>
                     </div>
