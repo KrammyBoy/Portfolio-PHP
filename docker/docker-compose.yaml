@@ -32,6 +32,8 @@ services:
     volumes: 
     - ./storage/pgsql:/bitnami/postgresql
     restart: always
+    ports:
+      - "5432:5432"
     environment:
     - POSTGRESQL_USERNAME=mark
     - POSTGRESQL_PASSWORD=root
