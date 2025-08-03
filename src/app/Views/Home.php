@@ -1,10 +1,9 @@
 <?php 
 declare(strict_types= 1);
 
-use App\Models\Projects;
 use App\Models\ProjectTechnologies;
+use App\Enums\StatusName;
 
-$projects = (new Projects())->getProjects();
 ?>
     <div class="home">
         <div class="image-container wave curve">
@@ -44,44 +43,15 @@ $projects = (new Projects())->getProjects();
                                 <?php endforeach; ?>
                             </div>
                             <div class="status">
-                                <div class="status-circle"></div>
+                                <div class="status-circle <?= StatusName::getStatusName($project['status_id'])->value?>"></div>
                                 <span>
-                                    <?= match($project['status_id']) {
-                                        1 => 'Completed',
-                                        2 => 'In Progress',
-                                        3 => 'Abandoned',
-                                        default => 'Unknown'
-                                    } ?>
+                                    <?= ucfirst( StatusName::getStatusName($project['status_id'])->value) ?>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <?php endforeach; ?>
-
-                <!-- Project 2 -->
-                <div class="projectEach">
-                    <div class="project-image"></div>
-                    <div class="project-content">
-                        <h3>Task Management App</h3>
-                        <p>A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features. Built with modern web technologies for enhanced productivity.</p>
-                        <div class="moreInfo">
-                            <div class="action-buttons">
-                                <i class='bx bx-send'></i>
-                                <i class='bxl bx-github'></i>
-                            </div>
-                            <div class="technologies">
-                                <i class='bxl bx-javascript'></i>
-                                <i class='bxl bx-html5'></i>
-                                <i class='bxl bx-css3'></i>
-                            </div>
-                            <div class="status">
-                                <div class="status-circle"></div>
-                                <span>Complete</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="experience">
@@ -89,11 +59,15 @@ $projects = (new Projects())->getProjects();
             <div class="experience-container">
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <h3 class="degree">Bachelor of Science in Computer Science</h3>
-                        <div class="school">University of Cebu - Main</div>
-                        <span class="duration">2021 - 2025</span>
+                        <h3 class="degree"><?= htmlspecialchars($experience['experience_degree'])?></h3>
+                        <div class="school"><?= htmlspecialchars($experience['school'])?></div>
+                        <?php 
+                            $start_date = new DateTime($experience['start_date']);
+                            $end_date = new DateTime($experience['end_date']);
+                        ?>
+                        <span class="duration"><?= htmlspecialchars($start_date->format('M Y'))?> - <?= htmlspecialchars($end_date->format('M Y'))?></span>
                         <p class="description">
-                            Completed a comprehensive computer science program with focus on software development, algorithms, and data structures. Gained hands-on experience in multiple programming languages including Java, Python, and JavaScript. Participated in various coding competitions and collaborative projects that enhanced problem-solving and teamwork skills.
+                            <?= htmlspecialchars($experience['experience_description'])?>
                         </p>
                     </div>
                 </div>

@@ -55,6 +55,12 @@ class Projects {
 
     }
 
+    public function getProjectsRandom(int $max = 3): array {
+        $array = $this->getProjects();
+        shuffle($array);
+        return array_slice($array,0, $max);
+    }
+
     // Insert methods
     public function insertProject(
         String $title, 
