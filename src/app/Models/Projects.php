@@ -46,11 +46,17 @@ class Projects {
 
     }
     // Get DB;
-    public function getProjects(): array {
-        $query = "SELECT * FROM Projects";
+    public function getProjects(?int $status_id = 0): array {
+        $query = "SELECT * FROM Projects WHERE deleted_at IS NULL";
+        $params = [];
+        if ($status_id > 0){
+            $query .= " AND status_id = :status_id";
+            $params[':status_id'] = $status_id;
+        }
+
         $stmt = $this->pdo->prepare($query);
         
-        $stmt->execute();
+        $stmt->execute($params);
         return $stmt->fetchAll();
 
     }
@@ -59,6 +65,31 @@ class Projects {
         $array = $this->getProjects();
         shuffle($array);
         return array_slice($array,0, $max);
+    }
+
+    // Count methods
+    public function getGroupedStatusCount(): array {
+        $query = "SELECT status_id, COUNT(*) as total FROM Projects WHERE deleted_at IS NULL GROUP BY status_id"; 
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $counts = [
+            1 => 0, // Completed
+            2 => 0, // In Progress
+            3 => 0, // Abandoned
+        ];
+
+        foreach ($results as $row) {
+            $counts[(int)$row['status_id']] = (int)$row['total'];
+        }
+
+        return [
+            'Completed' => $counts[1],
+            'In Progress' => $counts[2],
+            'Abandoned' => $counts[3],
+            'Total' => array_sum($counts),
+        ];
     }
 
     // Insert methods

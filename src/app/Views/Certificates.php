@@ -1,3 +1,3 @@
 <div class="certificates">
-    <p>Certificates</p>
+    <h1>Certificates</h1>
 </div>

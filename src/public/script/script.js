@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
   navLinks.forEach(link => {
     link.classList.toggle('active', link.getAttribute('href') === currentPath);
   });
+
+  //Check if the current path is projects
+  if (currentPath.includes('projects')) {
+    const statusID = new URLSearchParams(window.location.search).get('status_id');
+    if (statusID) {
+      document.querySelectorAll('.stat-item').forEach(item => {
+        item.classList.remove('selected');
+      });
+      const selectedItem = document.querySelector(`.stat-item[data-status-id="${statusID}"]`);
+      if (selectedItem) {
+        selectedItem.classList.add('selected');
+      }
+    }
+  }
 });
 
 
@@ -36,3 +50,14 @@ window.addEventListener("resize", () => {
     mobileToggle.classList.remove("active");
   }
 });
+
+function filterProjects(statusID, element){
+  // Remove active class from all status
+  document.querySelectorAll('.stat-item').forEach(item => {
+    item.classList.remove('.selected');
+  });
+
+  element.classList.add('.selected');
+
+  window.location.href = `?status_id=${statusID}`;
+}
