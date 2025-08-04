@@ -42,6 +42,7 @@ class Experience {
     private string $school;
 
     private string $experience_degree;
+    
 
     public function __construct() {
         $this->pdo = DBContext::getInstance()->getConnection();

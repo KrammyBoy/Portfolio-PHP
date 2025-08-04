@@ -15,7 +15,10 @@ namespace App\Models;
  * - boxicon (VARCHAR[255]) NOT NULL
  * - category (VARCHAR[255]) NOT NULL
  */
+use PDO;
 class Technologies {
+
+    private PDO $pdo;
 
     private int $id;
 
@@ -42,7 +45,26 @@ class Technologies {
     private string $category;
 
     public function __construct() {
-
+        $this->pdo = DBContext::getInstance()->getConnection();
+    }
+    //Get Methods
+    public function getAllTechnologies(): array {
+        $query = "SELECT * FROM Technologies";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function bundleTechnologies(array $technologies): array {
+        $bundled = [];
+        foreach ($technologies as $tech) {
+            $category = $tech['category'];
+            if (!isset($bundled[$category])) {
+                $bundled[$category] = [];
+            }
+            $bundled[$category][] = $tech;
+        }
+        return $bundled;
     }
 
     //Insert Methods 

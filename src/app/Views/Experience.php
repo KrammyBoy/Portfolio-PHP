@@ -3,7 +3,9 @@ declare(strict_types= 1);
 
 ?>
 <div class="experience-page">
-    <h1>Experience</h1>
+    <div class="image-container wave curve">
+        <h1>Experience</h1>
+    </div>
     <div class="experience-block">
         <div class="timeline-line"></div>
         <?php foreach($experiences as $experience): ?>
