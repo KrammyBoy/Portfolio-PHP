@@ -2,6 +2,8 @@
 declare(strict_types= 1);
 
 
+use App\Controllers\AdminController;
+use App\Controllers\AdminDashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\ProjectsController;
 use App\Controllers\CertificationController;
@@ -19,13 +21,20 @@ require __DIR__ . '/../vendor/autoload.php';
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+//Session
+session_start();
+
 $router = new Router();
 $router->get('/', [HomeController::class, 'index'])
         ->get('/projects', [ProjectsController::class, 'index'])
         ->get('/certifications', [CertificationController::class, 'index'])
         ->get('/experiences', [ExperienceController::class, 'index'])
         ->get('/technologies', [TechnologiesController::class, 'index'])
-        ->get('/contact', [ContactController::class, 'index']);
+        ->get('/contact', [ContactController::class, 'index'])
+        ->get('/admin', handler: [AdminController::class, 'index'])
+        ->get('/admin/dashboard', [AdminDashboardController::class, 'index'])
+        ->post('/contact', [ContactController::class, 'sendMessage'])
+        ->post('/login/checkAuthentication', [AdminController::class, 'checkAuthentication']);
 
 ob_start();
 $router->resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
@@ -39,7 +48,7 @@ $pageContent = ob_get_clean();
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Mark Salabsab</title>  
-                <link rel="stylesheet" href="./styles/style.css?v=<?= filemtime(__DIR__. '/styles/style.css')?>" >
+                <link rel="stylesheet" href="/styles/style.css?v=<?= filemtime($_SERVER['DOCUMENT_ROOT']. '/styles/style.css')?>" >
                 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
                 <!--Icons-->
                 <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
@@ -48,15 +57,18 @@ $pageContent = ob_get_clean();
         </head>
         <body>
                 <header class="header">
-                        <?php include '../app/Views/Components/Navigation.php'?>
+                        <?php $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+                        if($path !== "/admin"): ?>
+                                <?php include '../app/Views/Components/Navigation.php'?>
+                        <?php endif; ?>
                 </header>
                 <main>
                         <?= $pageContent ?>
                 </main>
 
                 <?php include '../app/Views/Components/Footer.php'?>
+                <?php include '../app/Views/Components/Toast.php'?>
         </body>
-        <script src="./script/script.js">
-
-        </script>
+        <script src="./script/script.js"></script>
+        <script src="./script/helper.js"></script>
 </html>
