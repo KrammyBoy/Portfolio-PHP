@@ -255,11 +255,12 @@ a {
 .profile-image {
   position: relative;
   bottom: 4rem;
-  width: 120px;
-  height: 120px;
+  width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary-bg), var(--primary-btn));
   box-shadow: 0 8px 24px rgba(93, 0, 30, 0.3);
+  object-fit: cover;
 }
 
 h1 {
@@ -1603,14 +1604,16 @@ Components design
 }
 
 .login-alert {
-  background-color: #f44336;
+  background-color: white;
   color: var(--text-color);
   border-radius: 6px;
-  border: 2px solid #f44336;
+  border: 2px solid var(--primary-btn);
   padding: 0.5rem 1rem;
-  opacity: 1,
-
+  opacity: 1;
+  margin: 1rem 0;
+  transition: opacity 0.4s ease;
 }
+
 
 /* Login Page */
 .login-body {
@@ -1622,19 +1625,6 @@ Components design
             position: relative;
             overflow: hidden;
 }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(227, 175, 188, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(238, 76, 124, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(154, 23, 80, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
-        }
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -1784,6 +1774,7 @@ Components design
     }
 }
 
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-container {
@@ -1931,6 +1922,243 @@ Components design
         font-size: 0.9rem;
     }
 }
+
+/* Dashboard Page */
+        .dashboard {
+            max-width: 75rem;
+            min-height: 100vh;
+            padding: 1.5rem;
+            color: var(--text-color);            
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-auto-rows: minmax(150px, auto);
+            gap: 2rem;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, var(--btn-hover), var(--primary-bg));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .dashboard-card:hover::before {
+            opacity: 1;
+        }
+        .header-card {
+            grid-column: 1 / -1;
+            background: var(--primary-bg);
+            text-align: center;
+            padding: 40px;
+        }
+
+        .header-card h1 {
+            color: var(--base-bg);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-card p {
+            color: var(--base-bg);
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .datetime-card {
+            grid-column: span 1;
+            text-align: center;
+        }
+
+        .datetime-card .time {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .datetime-card .date {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        .visits-card {
+            grid-column: span 2;
+        }
+
+        .visits-card canvas {
+            max-height: 200px;
+        }
+        .stats-grid {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--base-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-info-card {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .contact-card {
+            grid-column: span 1;
+        }
+
+        .experience-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-bg);
+            margin-bottom: 15px;
+        }
+
+        .exp-company {
+            font-weight: 700;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .exp-role {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .exp-duration {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .exp-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: var(--base-bg);
+            background: linear-gradient(135deg, var(--btn-hover), var(--primary-bg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .update-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary-bg), var(--btn-hover));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .metric-badge {
+            position: relative;
+            color: var(--base-bg);
+            width: 60%;
+            display: inline-block;
+            top: 2rem;
+            padding: 4px 12px;
+            background: var(--primary-bg);
+            border: 1px solid var(--primary-bg);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+
 
 @media (max-width: 480px) {
   .nav-container {

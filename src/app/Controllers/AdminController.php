@@ -24,6 +24,19 @@ class AdminController {
         }
     }
 
+    public function logout(){
+        //Destroy session
+        session_start();
+        $_SESSION = [];
+        session_destroy();
+        //TODO Delete session cookies
+
+        //
+        header('Location: /');
+        exit;
+
+    }
+
 
 
     public function checkAuthentication(){
@@ -42,7 +55,7 @@ class AdminController {
                 }
                 //If user is locked
                 if($account['locked_until'] < new DateTime() && $account['locked_until'] !== null){
-                    LoginAlert::setLoginAlert($username . ' is locked until ' . (new DateTime($account['locked_until']))->format('D, M Y H:i'));
+                    LoginAlert::setLoginAlert($username . ' is locked until ' . (new DateTime($account['locked_until']))->format('d, M Y H:i'));
                     header('Location: /admin?password=qemithAmixUPRl9onl2o');
                     exit();
                 }
@@ -53,7 +66,7 @@ class AdminController {
                     
                     //Redirect and set session
                     $_SESSION['admin_logged_in'] = true;
-                    header('Location: /admin/dashboard');
+                    header('Location: /dashboard');
                     exit();                    
                 }
 

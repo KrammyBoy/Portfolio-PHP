@@ -47,7 +47,7 @@ class Admin{
         $this->pdo->beginTransaction();
 
         try{
-            $locked_until = (new DateTime())->modify("+12 hour");
+            $locked_until = (new DateTime())->modify("+12 hour")->format("Y-m-d H:i:s");
 
             $query = 'UPDATE adminuser SET locked_until = :locked_until WHERE username = :username';
             $stmt = $this->pdo->prepare($query);

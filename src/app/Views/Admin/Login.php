@@ -1,5 +1,5 @@
 <div class="login-body">    
-    <div class="login" id="login">
+    <div class="login" id="login-block">
         <h3>Admin Login</h3>
         <?php include __DIR__ . '/../Components/LoginAlert.php';?>
         <form class="login-container" action="/login/checkAuthentication" method="POST">

@@ -21,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+document.getElementById('logoutBtn').addEventListener('click', ()=> {
+  window.location.href="/logout";
+});
 
 function toggleMobileMenu() {
   const mobileMenu = document.querySelector(".mobile-menu");

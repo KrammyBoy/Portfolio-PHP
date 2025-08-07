@@ -13,6 +13,11 @@ class AdminSession {
             exit();
         }
     }
+
+    // return getAdminLogged
+    public function getAdminLogged(): bool {
+        return isset($_SESSION['admin_logged_in']) ? true : false;
+    }
 }
 
 ?>

@@ -1,1 +1,5 @@
 .env
+
+#Ignore Docker Volumes
+docker/storage/pgsql/
+docker/pgadmin/pgadmin_data/

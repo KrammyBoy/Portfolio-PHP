@@ -7,7 +7,7 @@ use App\Enums\StatusName;
 ?>
     <div class="home">
         <div class="image-container wave curve">
-            <img src="image.jpg" alt="Profile Picture" class="profile-image"/>
+            <img src="./assets/images/profile-picture.jpg" alt="Profile Picture" class="profile-image"/>
         </div>
         <div class="project">
             <h1>Projects</h1>
