@@ -67,6 +67,11 @@ class Technologies {
         return $bundled;
     }
 
+    //Count Methods
+    public function getTotalTechnologies(): int {
+        return $this->pdo->query('SELECT COUNT(*) FROM Technologies')->fetchColumn();
+    }
+
     //Insert Methods 
     public function insertTechnology(
         string $technology_name,

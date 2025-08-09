@@ -12,6 +12,10 @@ use DateTime;
 class AdminController {
     public const MAX_LOGIN_ATTEMPTS = 5;
     //We need to manually password-type this to ender the admin
+    private Admin $admin;
+    public function __construct(){
+        $this->admin = new Admin();
+    }
     public function index(){
         //Set Session for login to hide navigation
 
@@ -36,16 +40,13 @@ class AdminController {
         exit;
 
     }
-
-
-
     public function checkAuthentication(){
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             if(isset($_POST['username']) && isset($_POST['password'])){
                 $username = $_POST['username'];
                 //Fetch user by username
-                $account = (new Admin())->fetchPasswordAndLockedByUsername($username);
+                $account = $this->admin->fetchPasswordAndLockedByUsername($username);
                 var_dump($account);
                 //If user not found
                 if($account === null){
@@ -62,10 +63,11 @@ class AdminController {
                 //Check if password is correct argon2id
                 if (password_verify($_POST['password'], $account['password_hash'])){
                     //Update the user last_login_at
-                    (new Admin())->updateLastLoginByUsername($username);
+                    $this->admin->updateLastLoginByUsername($username);
                     
-                    //Redirect and set session
+                    //Setting session
                     $_SESSION['admin_logged_in'] = true;
+                    $_SESSION['admin_id'] = $this->admin->fetchIdByUsername($username);
                     header('Location: /dashboard');
                     exit();                    
                 }

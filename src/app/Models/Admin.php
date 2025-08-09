@@ -42,7 +42,20 @@ class Admin{
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result[0] ?? null;
     }
-    //Update
+
+    public function fetchIdByUsername(string $username): ?int {
+        $stmt = $this->pdo->prepare('SELECT id FROM adminuser WHERE username = :username');
+        $stmt->execute([':username' => $username]);
+        return $stmt->fetchColumn() ?: null;
+    }
+
+    public function fetchUserByID(int $id): ?array {
+        $query = 'SELECT username, last_login_at, updated_at FROM adminuser where id = :id';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $id]);   
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+        //Update
     public function updateUserLockByUsername(string $username){
         $this->pdo->beginTransaction();
 

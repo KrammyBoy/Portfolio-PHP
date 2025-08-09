@@ -91,6 +91,16 @@ class Projects {
             'Total' => array_sum($counts),
         ];
     }
+    // Count All Projects
+    public function getProjectsCount(): int {
+        // $query = 'SELECT COUNT(*) FROM Projects';
+        // $stmt = $this->pdo->prepare($query);
+        // $stmt->execute();
+        // $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // var_dump($result);
+        // return $result;
+        return $this->pdo->query('SELECT COUNT(*) FROM Projects')->fetchColumn();
+    }
 
     // Insert methods
     public function insertProject(

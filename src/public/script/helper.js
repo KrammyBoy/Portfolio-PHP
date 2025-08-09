@@ -33,6 +33,16 @@ function showToast(message, type='info', timeout){
     //Set timeout
 }
 
+//Modal
+
+function closeModal(){
+  const modal = document.querySelector('.modal-overlay');
+  modal.style.animation = 'fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+  setTimeout(()=>{
+    modal.style.display = 'none';
+  }, 300)
+}
+
 function showLoginAlert(message, duration){
   // Get the specific part you want to attached
   const login = document.getElementById('login-block');
@@ -57,45 +67,36 @@ function showLoginAlert(message, duration){
   }, duration);
 }
 
-function interfaceModal(type){
+function interfaceModal(type, action=null){
   switch (type) {
     case 'contact':
       showContactModal();
       break;
-  
+    case 'project':
+      showProjectModal(action);
+      break;
     default:
       break;
   }
 }
-function showContactModal(){
-  const contact = document.getElementById('contact-modal');
+function showProjectModal(action){
+    const modal = document.querySelector('.project-modal');
 
-  if (contact){
-    contact.classList.add('active-modal');
-  }
+    if (action === 'add'){
+        modal.querySelector('.modal-title').textContent = "Add Projects";
+        modal.querySelector('form').setAttribute('action', '/addProject');
+        modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Project";
+        modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        modal.style.display = 'flex';
 
-  setTimeout(()=> {
-    contact.style.opacity = '1';
-  }, 10);
+    } else if(action === 'update'){
+
+    }
 }
-
-function setModalType(type){
-
-  fetch('/modal', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({type})
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error('Error', error);
-  })
-  //PHP will do the work
+function showContactModal(){
+  const contact = document.querySelector('.modal-overlay');
+  contact.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+  contact.style.display = 'flex';
 }
 
         // Update time and date
@@ -193,4 +194,5 @@ function setModalType(type){
             });
         }
         updateDateTime();
-        setInterval(updateDateTime, 1000);        
+        setInterval(updateDateTime, 1000);
+              

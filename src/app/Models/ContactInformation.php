@@ -25,6 +25,12 @@ class ContactInformation {
         $this->pdo = DBContext::getInstance()->getConnection();
     }
 
+    //Get Methods
+
+    public function getContactInformation(): array {
+        return $this->pdo->query('SELECT * FROM contactinformation')->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 }
 

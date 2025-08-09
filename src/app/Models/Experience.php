@@ -54,7 +54,7 @@ class Experience {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    //TODO Probably more effecient if we query the specific like the longest date?
     public function getRecentExperience(int $max): array {
         $array = $this->getExperience();
         $arrayExperience = array_splice($array, 0, $max);
@@ -67,7 +67,20 @@ class Experience {
         return ($experience_description === "Education" || $experience_description === "Work") ? true:false;
 
     }
+
+    //Count methods
+    public function getTotalExperienceByType(string $experience_type): float {
+        $query = "SELECT ROUND(SUM(EXTRACT(EPOCH FROM end_date - start_date))/(365.25 * 24 * 60 * 60), 2) AS total_years
+        FROM Experiences WHERE experience_type = :experience_type";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([":experience_type" => $experience_type]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total_years'] ?? 0;
+
+    }
+
     // Insert methods
+
 
     public function insertExperience(
         string $experience_type,

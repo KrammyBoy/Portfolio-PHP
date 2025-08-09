@@ -58,6 +58,11 @@ class Certificates {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    //Count methods
+    public function getCertificatesCount(): int {
+        return $this->pdo->query('SELECT COUNT(*) FROM Certifications')->fetchColumn();
+    }
+
     //Insert
     public function insertCertificate(
         string $issuer,

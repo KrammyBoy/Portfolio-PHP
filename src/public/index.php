@@ -36,8 +36,8 @@ $router->get('/', [HomeController::class, 'index'])
         ->get('/dashboard', [AdminDashboardController::class, 'index'])
         ->get('/logout', [AdminController::class, 'logout'])
         ->post('/contact', [ContactController::class, 'sendMessage'])
-        ->post('/modal', [ModalController::class, 'setModalType'])
-        ->post('/login/checkAuthentication', [AdminController::class, 'checkAuthentication']);
+        ->post('/login/checkAuthentication', [AdminController::class, 'checkAuthentication'])
+        ->post('/updateContactInformation', [AdminDashboardController::class, 'updateContactInformation']);
 
 ob_start();
 $router->resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
