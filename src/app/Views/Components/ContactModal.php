@@ -1,7 +1,7 @@
     <div class="modal-overlay">
         <div class="modal">
         
-            <button class="close-btn" onclick="closeModal()">
+            <button class="close-btn" onclick="closeModal('.modal-overlay')">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="update-btn" onclick="closeModal()">
+                    <button type="button" class="update-btn" onclick="closeModal('.modal-overlay')">
                         Cancel
                     </button>
                     <button type="submit" class="update-btn">

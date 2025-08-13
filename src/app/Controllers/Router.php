@@ -7,6 +7,7 @@ namespace App\Controllers;
 class Router{
     private const GET = 'GET';
     private const POST = 'POST';
+    private const DELETE = "DELETE";
 
     private $routes;
 
@@ -14,6 +15,7 @@ class Router{
         $this->routes = [
             self::GET => [],
             self::POST => [],
+            self::DELETE => [],
         ];
     }
 
@@ -25,6 +27,12 @@ class Router{
 
     public function post(string $path, array $handler): self{
         $this->routes[self::POST][$path] = $handler;
+
+        return $this;
+    }
+
+    public function delete(string $path, array $handler): self {
+        $this->routes[self::DELETE][$path] = $handler;
 
         return $this;
     }

@@ -305,7 +305,7 @@ h1::after {
   border-bottom: 1px solid var(var(--primary-bg));
 }
 
-.stat-item {
+.stat-item-project {
   flex: 1;
   padding: 16px 12px;
   text-align: center;
@@ -316,28 +316,28 @@ h1::after {
   color: var(--text-color);
 }
 
-.stat-item:last-child {
+.stat-item-project:last-child {
   border-right: none;
 }
 
-.stat-item:hover {
+.stat-item-project:hover {
   background: var(--primary-bg);
   color: white;
 }
 
-.stat-item.selected {
+.stat-item-project.selected {
   background: var(--primary-bg);
   color: white;
 }
 
-.stat-number {
+.stat-number-project {
   display: block;
   font-size: 1.5rem;
   font-weight: 600;
   line-height: 1;
   margin-bottom: 4px;
 }
-.stat-label {
+.stat-label-project {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -345,7 +345,7 @@ h1::after {
   opacity: 0.8;
 }
 
-.selected .stat-label {
+.selected .stat-label-project {
   opacity: 1;
 }
 
@@ -400,6 +400,13 @@ h1::after {
   position: relative;
   overflow: hidden;
 }
+.project-image img{
+  position: relative;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 .project-image::after {
   content: "🎨";
   position: absolute;
@@ -408,6 +415,7 @@ h1::after {
   transform: translate(-50%, -50%);
   font-size: 3rem;
   opacity: 0.3;
+  z-index: 0;
 }
 .project-content {
   padding: 1.5rem;
@@ -1905,6 +1913,7 @@ Components design
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 4;
             color: var(--text-color);
         }
 
@@ -2126,7 +2135,79 @@ Components design
             box-shadow: 0 4px 15px rgba(238, 76, 124, 0.4);
         }
 
+/* Admin Modal  */
 
+        .admin-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(93, 0, 30, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 3;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .admin-modal {
+            background: var(--section-bg);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+            border: 2px solid var(--card-bg);
+        }
+        .admin-modal-header {
+            background: linear-gradient(135deg, var(--primary-bg), var(--primary-btn));
+            color: white;
+            padding: 40px 40px 30px 40px;
+            border-radius: 22px 22px 0 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .admin-modal-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .admin-form {
+            padding: 40px;
+        }
+        .admin-form-group {
+            margin-bottom: 28px;
+        }
+        input[type="file"] {
+            padding: 12px 16px;
+            background: var(--base-bg);
+            border: 2px dashed var(--card-bg);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            border-color: var(--primary-btn);
+            background: white;
+        }
+
+        /* Preview image styling */
+        #preview {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 3px solid var(--card-bg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
 /* Responsive Design */
         @media (max-width: 1200px) {

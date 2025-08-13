@@ -1,3 +1,7 @@
+<?php 
+
+use App\Enums\StatusName;
+?>    
     <div class="projects-admin">
         <div class="projects-admin-header">
             <h1>Projects</h1>
@@ -22,20 +26,32 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    foreach($projects as $project):
+                    ?>
                     <tr>
-                        <td>1</td>
-                        <td>None</td>
-                        <td>Basic</td>
-                        <td>Lero</td>
-                        <td>Basic</td>
-                        <td>Basic</td>
-                        <td>Basic</td>
-                        <td>Basic</td>
+                        <td><?= htmlspecialchars($project['id'])?></td>
+                        <td><?php
+                        if ($project['image'] === null):
+                        ?>
+                            <?= htmlspecialchars('null')?>
+                        <?php else: ?>
+                            <img src="<?= htmlspecialchars('assets/images/'.$project['image'])?>" style="width: 50px; height:50px object-fit:contain">
+                        <?php endif; ?>
+                        </td>
+                        <td><?= htmlspecialchars($project['title'])?></td>
+                        <td><?= htmlspecialchars($project['description'])?></td>
+                        <td><?= ($project['live_url']===null)? htmlspecialchars('null'):htmlspecialchars(string: $project['live_url']) ?></td>
+                        <td><?= ($project['repo_url']===null)? htmlspecialchars('null'):htmlspecialchars(string: $project['repo_url']) ?></td>
+                        <td><?= htmlspecialchars($project['status_id'])?></td>
+                        <td><?= ($project['deleted_at']===null)? htmlspecialchars('null'):htmlspecialchars(string: $project['deleted_at'])?></td>
                         <td class="actions-cell">
-                            <button class="delete-btn">Delete</button>
-                            <button class="update-table-btn" onclick="interfaceModal('projects', 'update')">Update</button>
+                            <button class="delete-btn" onclick="deleteProject(<?= htmlspecialchars($project['id'])?>)">Delete</button>
+                            <button class="update-table-btn" onclick="showProjectModal('update', <?=htmlspecialchars($project['id'])?>)">Update</button>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
+                    
                 </tbody>
             </table>
         </div>

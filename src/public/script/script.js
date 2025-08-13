@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (currentPath.includes('projects')) {
     const statusID = new URLSearchParams(window.location.search).get('status_id');
     if (statusID) {
-      document.querySelectorAll('.stat-item').forEach(item => {
+      document.querySelectorAll('.stat-item-project').forEach(item => {
         item.classList.remove('selected');
       });
-      const selectedItem = document.querySelector(`.stat-item[data-status-id="${statusID}"]`);
+      const selectedItem = document.querySelector(`.stat-item-project[data-status-id="${statusID}"]`);
       if (selectedItem) {
         selectedItem.classList.add('selected');
       }
@@ -64,3 +64,19 @@ function filterProjects(statusID, element){
 
   window.location.href = `?status_id=${statusID}`;
 }
+
+// File Preview
+const fileInput = document.querySelector('.project-modal #image');
+const previewImg  = document.querySelector('.project-modal #preview');
+
+fileInput.addEventListener('change', ()=> {
+  const file = fileInput.files[0];
+
+  if (file){
+    previewImg.src = URL.createObjectURL(file);
+        previewImg.style.display = 'block';
+  } else {
+      previewImg.src = '';
+      previewImg.style.display = 'none';
+  }
+});

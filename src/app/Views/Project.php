@@ -16,29 +16,29 @@ $projectInformation = (new Projects())->getGroupedStatusCount();
   <div class="project-overview">
     <div class="project-status">PROJECT STATUS | FILTER</div>
     <div class="stats-row">
-      <div class="stat-item selected" 
+      <div class="stat-item-project selected" 
       data-status-id="0"
       onclick="filterProjects(0, this)">
-        <span class="stat-number"><?= $projectInformation['Total']?></span>
-        <span class="stat-label">Total</span>
+        <span class="stat-number-project"><?= $projectInformation['Total']?></span>
+        <span class="stat-label-project">Total</span>
       </div>
-      <div class="stat-item total" 
+      <div class="stat-item-project total" 
       data-status-id="1"
       onclick="filterProjects(1, this)">
-        <span class="stat-number"><?= $projectInformation['Completed']?></span>
-        <span class="stat-label">Completed</span>
+        <span class="stat-number-project"><?= $projectInformation['Completed']?></span>
+        <span class="stat-label-project">Completed</span>
       </div>
-      <div class="stat-item total" 
+      <div class="stat-item-project total" 
       data-status-id="2"
       onclick="filterProjects(2, this)">
-        <span class="stat-number"><?= $projectInformation['In Progress']?></span>
-        <span class="stat-label">In Progress</span>
+        <span class="stat-number-project"><?= $projectInformation['In Progress']?></span>
+        <span class="stat-label-project">In Progress</span>
       </div>      
-      <div class="stat-item total" 
+      <div class="stat-item-project total" 
       data-status-id="3"
       onclick="filterProjects(3, this)">
-        <span class="stat-number"><?= $projectInformation['Abandoned']?></span>
-        <span class="stat-label">Abandoned</span>
+        <span class="stat-number-project"><?= $projectInformation['Abandoned']?></span>
+        <span class="stat-label-project">Abandoned</span>
       </div> 
     </div>
   </div>
@@ -48,7 +48,7 @@ $projectInformation = (new Projects())->getGroupedStatusCount();
     <div class="projectEach">
       <div class="project-image">
         <?php if (!empty($project['image'])): ?>
-            <img src="<?= htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>"/>
+            <img src="<?= 'assets/images/'.htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>" />
         <?php endif; ?>
       </div>
       <div class="project-content">

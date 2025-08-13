@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use PDO;
+use App\Helper\Toast;
+use App\Enums\FileType;
 
 /**
  * Class Projects
@@ -25,7 +27,6 @@ use PDO;
 class Projects {
 
     private $pdo;
-
     private int $id;
     private String $title;
     private string $description;
@@ -38,6 +39,8 @@ class Projects {
     private string $repo_url;
     private int $status_id;
     private \DateTime|null $deleted_at;
+
+    private string $project_prefix = 'proj_img_';
 
 
     public function __construct() {
@@ -93,31 +96,169 @@ class Projects {
     }
     // Count All Projects
     public function getProjectsCount(): int {
-        // $query = 'SELECT COUNT(*) FROM Projects';
-        // $stmt = $this->pdo->prepare($query);
-        // $stmt->execute();
-        // $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        // var_dump($result);
-        // return $result;
         return $this->pdo->query('SELECT COUNT(*) FROM Projects')->fetchColumn();
     }
 
-    // Insert methods
-    public function insertProject(
-        String $title, 
-        String $description, 
-        int $status_id,
-        String $image = null, 
-        String $live_url = null, 
-        String $repo_url = null, 
-    ): void {
-        if (strlen($title) > 48 || strlen($description) > 255) {
-            throw new \InvalidArgumentException("Title must be less than 48 characters and description must be less than 255 characters.");
-        }
-        
-
-        // Additional validation for URLs and image path can be added here
+    public function getLastId(): int {
+        return $this->pdo->query('SELECT last_value FROM projects_id_seq')->fetchColumn() + 1;
     }
+
+    // Insert methods
+    public function insertProject(array $data, array $file = []): void {
+        if (strlen($data['title']) > 48 || strlen($data['description']) > 255) {
+            Toast::setToast('error', 'Title and Description passed is longer than the maximum limit');
+            header('Location: /projects');
+            exit();
+        } //Check if file is not empty
+        $filePath = null;
+        if ($file){
+            $filePath = $this->project_prefix . $this->getLastId() . FileType::getFileType($file['image']['type']);
+        }
+
+        //Don't mind this just needed to for uploadImage
+        $this->title = $data['title'];
+
+        $this->pdo->beginTransaction();
+
+        try {
+            $query = 'INSERT INTO Projects(title, description, image, live_url, repo_url, status_id) VALUES (
+            :title, :description, :image, :live_url, :repo_url, :status_id)';
+
+            var_dump($data);
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([
+                ':title' => $data['title'],
+                ':description' => $data['description'],
+                ':image' => $filePath, 
+                ':live_url' => (!empty($data['live_url']))? $data['live_url'] : null,
+                ':repo_url' => (!empty($data['repo_url']))? $data['repo_url'] : null,
+                ':status_id' => (int) $data['status_id']
+            ]);
+
+            $this->pdo->commit();
+            //upload image to the server
+            if (!empty($file))  $this->uploadImage($file, $filePath);
+            Toast::setToast('success', 'Added ' . $data['title'] . ' project to the database');
+            header('Location: /projects');
+            
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            Toast::setToast('error', 'Something went wrong when inserting project to the database');
+            header('Location: /projects');
+            exit();      
+        }
+    }
+    public function uploadImage(array $file, string $fileName){
+        //Get all file information
+        $fileTemp = $file['image']['tmp_name'];
+
+        //Move upload
+        $directory = __DIR__ . '/../../public/assets/images/';
+        $finalName = $directory . $fileName;
+        if(move_uploaded_file($fileTemp, $finalName)){
+            Toast::setToast('success','Added ' . $this->title . ' project to the database');
+        }else {
+            Toast::setToast('error', 'Something went wrong when uploading the image');
+        }
+        header('Location: /projects');
+        exit();
+    }
+
+    //Delete methods
+    /**
+     * This will only soft delete the record
+     */
+    public function deleteProject(int $id): void{
+        $this->pdo->beginTransaction();
+
+        try{
+            $query = 'UPDATE Projects SET deleted_at = NOW() WHERE id = :id';
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(
+                [
+                    ':id' => $id
+                ]);     
+            $this->pdo->commit();
+            //Commit
+            Toast::setToast('success','[' . $id . '] is successfully deleted');
+        }catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            Toast::setToast('error', 'Something went wrong when deleting the record');
+        }
+
+        header('Location: /projects');
+        exit();
+    }
+    public function updateProject(array $data){
+        $this->pdo->beginTransaction();
+        try {
+            $query = 'UPDATE Projects SET title = :title, description = :description, 
+            live_url = :live_url, repo_url = :repo_url, status_id = :status_id  WHERE id = :id';
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([
+                ':title' => $data['title'],
+                ':description' => $data['description'],
+                ':live_url' => (!empty($data['live_url']))? $data['live_url'] : null,
+                ':repo_url' => (!empty($data['repo_url']))? $data['repo_url'] : null,
+                ':status_id' => (int) $data['status_id'],
+                ':id' => $data['id']
+            ]);
+
+            $this->pdo->commit();
+            //This is for updating files
+            //Just add it 
+            if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $this->updateImage($data);
+            }
+            Toast::setToast('success','Successfully update the project id ' . $data['id']);
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            Toast::setToast('error', 'Something went wrong with updating the project');
+        }
+
+        header('Location: /projects');
+        exit();
+    }
+    public function updateImage(array $data){
+            if(FileType::checkValidType($_FILES['image']['type'])){
+                $filename = $this->project_prefix . $data['id'] . FileType::getFileType($_FILES['image']['type']);
+
+                $this->pdo->beginTransaction();
+
+                try {
+                    $this->pdo->prepare('UPDATE Projects SET image = :image WHERE id = :id')->execute(
+                    [
+                        ':image' => $filename,
+                        ':id' => $data['id'],
+                    ]);
+
+                    //Check the image if it already exist
+                    $filePath = __DIR__.'/../../public/assets/images/' . $filename;
+                    if (file_exists($filePath)){
+                        //Delete the image
+                        unlink(realpath($filePath));
+                        //Move the new image
+                        if(move_uploaded_file($_FILES['image']['tmp_name'], $filePath)){
+                            $this->pdo->commit();                            
+                            Toast::setToast('success', 'Updated the image successfully');
+                            header('Location: /projects');
+                            exit();
+                        }
+                    }
+                } catch (\PDOException $e) {
+                    $this->pdo->rollBack();
+                    Toast::setToast('error', 'Something went wrong');
+                    header('Location: /projects');
+                    exit();
+
+                }
+            }
+            Toast::setToast('error','Something went wrong when updating the image');
+            header('Location: /projects');
+            exit();
+    }
+
 }
 
 ?>

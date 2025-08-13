@@ -37,7 +37,10 @@ $router->get('/', [HomeController::class, 'index'])
         ->get('/logout', [AdminController::class, 'logout'])
         ->post('/contact', [ContactController::class, 'sendMessage'])
         ->post('/login/checkAuthentication', [AdminController::class, 'checkAuthentication'])
-        ->post('/updateContactInformation', [AdminDashboardController::class, 'updateContactInformation']);
+        ->post('/updateContactInformation', [AdminDashboardController::class, 'updateContactInformation'])
+        ->post('/addProject', [ProjectsController::class, 'addProject'])
+        ->get('/projects/delete', [ProjectsController::class, 'deleteProject'])
+        ->post('/projects/update', [ProjectsController::class, 'updateProject']);
 
 ob_start();
 $router->resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
@@ -78,7 +81,9 @@ if ($title === ''){
                 <?php include '../app/Views/Components/Footer.php'?>
                 <?php include '../app/Views/Components/Toast.php'?>
         </body>
+        <script src="/script/api_calls.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
         <script src="/script/script.js"></script>
         <script src="/script/helper.js"></script>
+
 </html>

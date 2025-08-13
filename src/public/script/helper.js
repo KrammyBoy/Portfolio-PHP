@@ -35,12 +35,14 @@ function showToast(message, type='info', timeout){
 
 //Modal
 
-function closeModal(){
-  const modal = document.querySelector('.modal-overlay');
+function closeModal(action){
+  const modal = document.querySelector(action);
   modal.style.animation = 'fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
   setTimeout(()=>{
     modal.style.display = 'none';
-  }, 300)
+    modal.querySelector('form').reset();
+    modal.querySelector('#preview').src = '';
+  }, 200)
 }
 
 function showLoginAlert(message, duration){
@@ -79,18 +81,63 @@ function interfaceModal(type, action=null){
       break;
   }
 }
-function showProjectModal(action){
+function getRowDataById(projectId) {
+  const rows = document.querySelectorAll('table tr');
+  for (const row of rows) {
+
+    const firstCell = row.querySelector('td');
+    
+    if (firstCell && firstCell.textContent.trim() == projectId) {
+      //console.log(row.querySelector('img').src);
+      let array = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
+      //Change the image
+      const img = row.querySelector('td img');
+      if (img && img.src) {
+        array[1] = img.src;
+      }
+      return array;
+    }
+  }
+  return null; // not found
+}
+
+function showProjectModal(action, id=null){
     const modal = document.querySelector('.project-modal');
 
     if (action === 'add'){
-        modal.querySelector('.modal-title').textContent = "Add Projects";
+        modal.querySelector('.admin-modal-title').textContent = "Add Projects";
         modal.querySelector('form').setAttribute('action', '/addProject');
         modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Project";
         modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
         modal.style.display = 'flex';
 
     } else if(action === 'update'){
+        let rowValues = getRowDataById(id);
 
+        modal.querySelector('.admin-modal-title').textContent = "Update Projects [" +rowValues[0]+"]";
+        //Get the image using id
+
+        const form = modal.querySelector('form');
+        form.setAttribute('action', '/projects/update');
+        form.querySelector('#preview').src = rowValues[1];
+        form.querySelector('#preview').style = 'display: flex;'; 
+        form.querySelector('#title').value = rowValues[2];
+        form.querySelector('#description').value = rowValues[3];
+        form.querySelector('#live-url').value = (rowValues[4] === 'null') ? null: rowValues[4];
+        form.querySelector('#repo-url').value = (rowValues[5] === 'null') ? null: rowValues[5];
+        form.querySelector('#status').value = rowValues[6];
+
+        //Adding ID to input
+        const idHiddenField = document.createElement('input');
+        idHiddenField.id = 'id';
+        idHiddenField.type = 'hidden';
+        idHiddenField.name = 'id';
+        idHiddenField.value = rowValues[0];
+
+        form.appendChild(idHiddenField);
+
+        modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        modal.style.display = 'flex';
     }
 }
 function showContactModal(){
