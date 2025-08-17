@@ -27,26 +27,25 @@ use App\Enums\StatusName;
                 </thead>
                 <tbody>
                     <?php
-                    foreach($projects as $project):
+                    foreach($experiences as $experience):
                     ?>
                     <tr>
-                        <td><?= htmlspecialchars($project['id'])?></td>
-                        <td><?= htmlspecialchars($project['experience_type'])?></td>
-                        <td><?= htmlspecialchars($project['experience_description'])?></td>
-                        <td><?= htmlspecialchars($project['start_date'])?></td>
-                        <td><?= htmlspecialchars($project['end_date']) ?></td>
-                        <td><?= htmlspecialchars($project['school'])?></td>
-                        <td><?= htmlspecialchars($project['experience_degree'])?></td>
-                        <td><?= ($project['deleted_at']===null)? htmlspecialchars('null'):htmlspecialchars(string: $project['deleted_at'])?></td>
+                        <td><?= htmlspecialchars($experience['id'])?></td>
+                        <td><?= htmlspecialchars($experience['experience_type'])?></td>
+                        <td><?= htmlspecialchars($experience['experience_description'])?></td>
+                        <td><?= htmlspecialchars((new DateTime($experience['start_date']))->format('d, M Y'))?></td>
+                        <td><?= htmlspecialchars((new DateTime($experience['end_date']))->format('d, M Y')) ?></td>
+                        <td><?= htmlspecialchars($experience['school'])?></td>
+                        <td><?= htmlspecialchars($experience['experience_degree'])?></td>
+                        <td><?= ($experience['deleted_at']===null)? htmlspecialchars('null'):htmlspecialchars(string: $experience['deleted_at'])?></td>
                         <td class="actions-cell">
-                            <button class="delete-btn" onclick="deleteProject(<?= htmlspecialchars($project['id'])?>)">Delete</button>
-                            <button class="update-table-btn" onclick="showProjectModal('update', <?=htmlspecialchars($project['id'])?>)">Update</button>
+                            <button class="delete-btn" onclick="deleteExperience(<?= htmlspecialchars($experience['id'])?>)">Delete</button>
+                            <button class="update-table-btn" onclick="showExperienceModal('update', <?=htmlspecialchars($experience['id'])?>)">Update</button>
                         </td>
                     </tr>
                     <?php endforeach; ?>
-                    
                 </tbody>
             </table>
         </div>
     </div>
-    <?php include __DIR__ . '/../Components/ProjectModal.php'?>
+    <?php include __DIR__ . '/../Components/ExperienceModal.php'?>

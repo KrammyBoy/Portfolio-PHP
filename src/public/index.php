@@ -40,7 +40,10 @@ $router->get('/', [HomeController::class, 'index'])
         ->post('/updateContactInformation', [AdminDashboardController::class, 'updateContactInformation'])
         ->post('/addProject', [ProjectsController::class, 'addProject'])
         ->get('/projects/delete', [ProjectsController::class, 'deleteProject'])
-        ->post('/projects/update', [ProjectsController::class, 'updateProject']);
+        ->post('/projects/update', [ProjectsController::class, 'updateProject'])
+        ->post('/experiences/add', [ExperienceController::class, 'addExperience'])
+        ->post('/experiences/update', [ExperienceController::class, 'updateExperience'])
+        ->get('/experiences/delete', [ExperienceController::class, 'deleteExperience']);
 
 ob_start();
 $router->resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

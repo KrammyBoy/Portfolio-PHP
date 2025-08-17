@@ -77,6 +77,9 @@ function interfaceModal(type, action=null){
     case 'project':
       showProjectModal(action);
       break;
+    case 'experience':
+      showExperienceModal(action);
+      break;
     default:
       break;
   }
@@ -100,7 +103,43 @@ function getRowDataById(projectId) {
   }
   return null; // not found
 }
+function showExperienceModal(action, id=null){
+  const modal = document.querySelector('.experience-modal');
 
+  if (action === 'add'){
+    modal.querySelector('.admin-modal-title').textContent = "Add Experience";
+
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
+
+    form.querySelector('#button-submit').textContent = 'Add Experience';
+
+  } else if (action === 'update'){
+    let rowValues = getRowDataById(id);
+    modal.querySelector('.admin-modal-title').textContent = "Update Experience[" +rowValues[0] +"]";
+
+    const form = modal.querySelector('form');
+    form.setAttribute('action', '/experiences/update');
+    form.querySelector('#type').value = rowValues[1];
+    form.querySelector('#description').value = rowValues[2];
+    form.querySelector('#start_date').value = new Date(rowValues[3]).toISOString().split("T")[0];
+    form.querySelector('#end_date').value = new Date(rowValues[4]).toISOString().split("T")[0];
+    form.querySelector('#school').value = rowValues[5];
+    form.querySelector('#degree').value = rowValues[6];
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
+    //Adding ID to input
+    const idHiddenField = document.createElement('input');
+    idHiddenField.id = 'id';
+    idHiddenField.type = 'hidden';
+    idHiddenField.name = 'id';
+    idHiddenField.value = rowValues[0];
+
+    form.appendChild(idHiddenField);    
+    
+    form.querySelector('#button-submit').textContent = 'Update Experience';
+  }
+}
 function showProjectModal(action, id=null){
     const modal = document.querySelector('.project-modal');
 
