@@ -43,7 +43,10 @@ $router->get('/', [HomeController::class, 'index'])
         ->post('/projects/update', [ProjectsController::class, 'updateProject'])
         ->post('/experiences/add', [ExperienceController::class, 'addExperience'])
         ->post('/experiences/update', [ExperienceController::class, 'updateExperience'])
-        ->get('/experiences/delete', [ExperienceController::class, 'deleteExperience']);
+        ->get('/experiences/delete', [ExperienceController::class, 'deleteExperience'])
+        ->post( '/certificates/add' ,[CertificationController::class, 'addCertificate'])
+        ->post('/certificates/update', [CertificationController::class, 'updateCertificate'])
+        ->get('/certificates/delete', [CertificationController::class, 'deleteCertificate']);
 
 ob_start();
 $router->resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

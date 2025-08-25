@@ -32,11 +32,34 @@ function showToast(message, type='info', timeout){
     }, timeout);
     //Set timeout
 }
-
 //Modal
-
-function closeModal(action){
+function closeModal(action, type=null){
   const modal = document.querySelector(action);
+
+  if (sessionStorage.getItem('credential_url') !== null ){
+    sessionStorage.removeItem('credential_url');
+
+    document.querySelector('#temporary-preview-type')?.remove();
+    document.querySelector('#created-form')?.remove();
+
+    const admin_form = document.createElement('div');
+    admin_form.className = 'admin-form-group';
+    admin_form.id = 'created-form';
+    const label = document.createElement('label');
+    label.className = 'form-label';
+    const input = document.createElement('input');
+    input.className = 'form-input';  
+    label.textContent = 'Credential URL';
+
+    input.type = 'text';
+    input.id = 'credential_url';
+    input.name = 'credential_url';
+    input.placeholder = 'https://www.credly.com/badges/...';  
+    admin_form.appendChild(label);
+    admin_form.appendChild(input);
+    const typeFieldGroup = document.querySelector('#type').closest('.admin-form-group');
+    typeFieldGroup.insertAdjacentElement('afterend', admin_form);
+  }
   modal.style.animation = 'fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
   setTimeout(()=>{
     modal.style.display = 'none';
@@ -80,6 +103,9 @@ function interfaceModal(type, action=null){
     case 'experience':
       showExperienceModal(action);
       break;
+    case 'certificates':
+      showCertificatesModal(action);
+      break;
     default:
       break;
   }
@@ -102,6 +128,52 @@ function getRowDataById(projectId) {
     }
   }
   return null; // not found
+}
+function showCertificatesModal(action, id=null){
+  const modal = document.querySelector('.certificates-modal');
+
+  if (action === 'add'){
+        modal.querySelector('.admin-modal-title').textContent = "Add Certificates";
+        modal.querySelector('form').setAttribute('action', '/certificates/add');
+        modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Certificates";
+        modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        modal.style.display = 'flex';
+
+  } else if (action === 'update') {
+    let rowValues = getRowDataById(id);
+    modal.querySelector('.admin-modal-title').textContent = "Update Certificates[" +rowValues[0] +"]";
+
+    const form = modal.querySelector('form');
+    form.setAttribute('action', '/certificates/update');
+    form.querySelector('#name').value = rowValues[1];
+    form.querySelector('#issuer').value = rowValues[2];
+    form.querySelector('#date_earned').value = new Date(rowValues[3]).toISOString().split("T")[0];
+
+    //Something url versus type
+    form.querySelector('#type').value = rowValues[5];
+    //form.querySelector('#credential_url').value = rowValues[4];
+    form.querySelector('#description').value = rowValues[6];
+
+    fileUpload(JSON.stringify({
+      'type': rowValues[5],
+      'credential_url': rowValues[4]
+    }));
+    //
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
+
+    //Adding ID to input
+    const idHiddenField = document.createElement('input');
+    idHiddenField.id = 'id';
+    idHiddenField.type = 'hidden';
+    idHiddenField.name = 'id';
+    idHiddenField.value = rowValues[0];
+
+    form.appendChild(idHiddenField);    
+    
+    form.querySelector('#button-submit').textContent = 'Update Certificates';
+
+  }
 }
 function showExperienceModal(action, id=null){
   const modal = document.querySelector('.experience-modal');
@@ -184,6 +256,81 @@ function showContactModal(){
   contact.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
   contact.style.display = 'flex';
 }
+
+// Upload Change
+function fileUpload(uploadValue = null) {
+  const form = document.querySelector('.certificates-modal form');
+  const type = document.getElementById('type').value;
+
+  if (uploadValue !== null){
+    //Save to session storage
+    sessionStorage.setItem('credential_url', uploadValue);
+  }
+
+  // Remove any old created-form if it exists
+  const oldForm = document.getElementById('created-form');
+  if (oldForm) {
+    oldForm.remove();
+  }
+
+  // Create wrapper
+  const admin_form = document.createElement('div');
+  admin_form.className = 'admin-form-group';
+  admin_form.id = 'created-form';
+
+  // Label
+  const label = document.createElement('label');
+  label.className = 'form-label';
+
+  // Input
+  const input = document.createElement('input');
+  input.className = 'form-input';
+
+  //Saved Link
+  const savedLink = JSON.parse(sessionStorage.getItem('credential_url'));
+
+  if (type === 'File') {
+    label.textContent = 'Upload File';
+
+    input.type = 'file';
+    input.id = 'credential_url';
+    input.name = 'credential_url';
+    input.accept = '.pdf,.jpg,.png'; // optional, allowed file types
+
+
+    if (savedLink !== null && savedLink.type === 'File'){
+
+      const preview = document.createElement('a');
+      preview.href = savedLink.credential_url;  // e.g. URL to file from server
+      preview.textContent = "View uploaded file";
+      preview.style= 'color: blue; margin-left: 1rem';
+      preview.id = 'temporary-preview-type'
+      preview.target = "_blank";
+      label.appendChild(preview);
+    }
+  } 
+  else if (type === 'Url') {
+    label.textContent = 'Credential URL';
+
+    input.type = 'text';
+    input.id = 'credential_url';
+    input.name = 'credential_url';
+    input.placeholder = 'https://www.credly.com/badges/...';
+
+    if (savedLink !== null && savedLink.type === 'Url'){
+      input.value = savedLink.credential_url;
+    }
+  }
+
+  // Combine
+  admin_form.appendChild(label);
+  admin_form.appendChild(input);
+
+  // 🔑 Insert AFTER the Type field group
+  const typeFieldGroup = document.querySelector('#type').closest('.admin-form-group');
+  typeFieldGroup.insertAdjacentElement('afterend', admin_form);
+}
+
 
         // Update time and date
         function updateDateTime() {

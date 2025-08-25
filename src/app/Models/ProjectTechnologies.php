@@ -40,10 +40,22 @@ class ProjectTechnologies {
 
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(\PDOException $e) {
-            throw new \RuntimeException("Failed to get project technologies: " . $e->getMessage());
+            return [];
         }
 
     }
+    public function getTableWithProjectsAndTechnology(): array{
+        try {
+            $query = 'SELECT p.title, p.id, t.technology_name, pt.technology_id FROM Project_Technologies as pt JOIN Projects p ON
+            pt.project_id = p.id JOIN Technologies t ON pt.technology_id = t.id';
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }catch (\PDOException){
+            return [];
+        }
+    }
+
     //Insert Methods
     public function insertProjectTechnology(int $project_id, int $technology_id): void {
         // Validate that project_id and technology_id are positive integers

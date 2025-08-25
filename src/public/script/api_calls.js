@@ -11,3 +11,9 @@ function deleteExperience(id){
         window.location = `/experiences/delete?id=${id}`;
     }
 }
+
+function deleteExperience(id){
+    if (confirm(`Are you sure you want to delete this certificate[${id}]?`)){
+        window.location = `/certificates/delete?id=${id}`;
+    }
+}

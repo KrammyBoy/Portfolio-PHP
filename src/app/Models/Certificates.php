@@ -2,10 +2,12 @@
 
 declare(strict_types= 1);
 
+
 namespace App\Models;
 use PDO;
 use DateTime;
-
+use App\Helper\Validator\CertificateValidator;
+use App\Helper\Handler\FileHandler;
 /**
  * Class Certificates
  *
@@ -51,7 +53,7 @@ class Certificates {
 
     //get
     public function getAllCertificates(): array {
-        $query = "SELECT * FROM Certifications";
+        $query = "SELECT * FROM Certifications WHERE deleted_at IS NULL";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         
@@ -60,25 +62,124 @@ class Certificates {
 
     //Count methods
     public function getCertificatesCount(): int {
-        return $this->pdo->query('SELECT COUNT(*) FROM Certifications')->fetchColumn();
+        return $this->pdo->query('SELECT COUNT(*) FROM Certifications WHERE deleted_at IS NULL')->fetchColumn();
+    }
+
+    public function getCertificateLastID(){
+        return $this->pdo->query('SELECT last_value FROM certifications_id_seq')->fetchColumn() + 1;
     }
 
     //Insert
-    public function insertCertificate(
-        string $issuer,
-        string $name,
-        DateTime $date_earned,
-        string $credential_url,
-        string $type
-    ) {
-        if (strlen($name) > 64 || strlen($issuer) > 256) {
-            throw new \InvalidArgumentException("Input exceeds maximum length.");
-        }
-        $type = ucfirst(strtolower(trim($type)));
-        if ($type !== "Url" && $type !== "File") {
-            throw new \InvalidArgumentException("Type must be either 'Url' or 'File'.");
+    public function insertCertificate( array $data
+    ): bool {
+        var_dump($data);
+        $this->pdo->beginTransaction();
+
+        try {
+            $query = 'INSERT INTO Certifications(name, issuer, date_earned, credential_url, type, description)
+            VALUES(:name, :issuer, :date_earned, :credential_url, :type, :description)';
+
+            $this->pdo->prepare($query)->execute(
+                [
+                    ':name' => $data['name'],
+                    ':issuer' => $data['issuer'],
+                    ':date_earned' => $data['date_earned'],
+                    ':credential_url' => ($data['type'] === 'Url')? $data['credential_url'] : FileHandler::uploadCertificateFile($data),
+                    ':type' => $data['type'],
+                    ':description' => $data['description']
+                ]
+            );
+            $this->pdo->commit();
+            return true;
+        }catch (\PDOException){
+            $this->pdo->rollBack();
+            return false;
         }
     }
+    //Delete
+    public function deleteCertificate(int $id): bool {
+        $this->pdo->beginTransaction();
+
+        try{
+            $query = 'UPDATE Certifications SET deleted_at = NOW() WHERE id = :id';
+
+            $this->pdo->prepare($query)->execute([
+                ':id' => $id
+            ]);
+
+            $this->pdo->commit();
+            return true;
+        }catch(\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    //Update
+    public function updateCertificate(array $data): bool{
+        $this->pdo->beginTransaction();
+        try{
+            //If $_FILE is empty or with error that means that it is updated but updated without the file needed
+            //so no need to update those things            
+            if ($data['type'] === 'Url'){
+                self::updateCertificateUrl($data);
+            }
+            else if ($_FILES['credential_url']['error'] === UPLOAD_ERR_NO_FILE){
+                self::updateCertificateWithoutFile($data);
+            } else {
+                //File is there
+                self::updateCertificateWithFile($data);
+            }
+
+            $this->pdo->commit();
+            return true;
+        }catch (\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    //For Type Work
+    public function updateCertificateWithoutFile(array $data){
+        $query = 'UPDATE Certifications SET name = :name, issuer = :issuer, date_earned = :date_earned, type = :type, description = :description WHERE id = :id';
+        $this->pdo->prepare($query)->execute([
+            ':name' => $data['name'],
+            ':issuer' => $data['issuer'],
+            ':date_earned' => $data['date_earned'],
+            ':type' => $data['type'],
+            ':description' => $data['description'],
+            ':id' => $data['id']
+        ]);
+    }
+
+    public function updateCertificateWithFile(array $data){
+        $query = 'UPDATE Certifications SET name = :name, issuer = :issuer, date_earned = :date_earned, credential_url = :credential_url, type = :type, description = :description WHERE id = :id';
+        $this->pdo->prepare($query)->execute([
+            ':name' => $data['name'],
+            ':issuer' => $data['issuer'],
+            ':date_earned' => $data['date_earned'],
+            ':credential_url' => FileHandler::uploadCertificateFile($data),
+            ':type' => $data['type'],
+            ':description' => $data['description'],
+            ':id' => $data['id']
+        ]);
+    }
+
+    //Url
+    public function updateCertificateUrl(array $data){
+        $query = 'UPDATE Certifications SET name = :name, issuer = :issuer, date_earned = :date_earned, credential_url = :credential_url, type = :type, description = :description WHERE id = :id';
+        $this->pdo->prepare($query)->execute([
+            ':name' => $data['name'],
+            ':issuer' => $data['issuer'],
+            ':date_earned' => $data['date_earned'],
+            ':credential_url' => $data['credential_url'],
+            ':type' => $data['type'],
+            ':description' => $data['description'],
+            ':id' => $data['id']
+        ]);
+    }
+
+    
 }
 
 ?>
