@@ -9,9 +9,12 @@ use App\Controllers\ProjectsController;
 use App\Controllers\CertificationController;
 use App\Controllers\ExperienceController;
 use App\Controllers\TechnologiesController;
+use App\Controllers\ProjectTechnologiesController;
 use App\Controllers\ContactController;
 use App\Controllers\ModalController;
 use App\Controllers\Router;
+use App\Models\ProjectTechnologies;
+use App\Models\Technologies;
 use Dotenv\Dotenv;
 
 
@@ -46,7 +49,12 @@ $router->get('/', [HomeController::class, 'index'])
         ->get('/experiences/delete', [ExperienceController::class, 'deleteExperience'])
         ->post( '/certificates/add' ,[CertificationController::class, 'addCertificate'])
         ->post('/certificates/update', [CertificationController::class, 'updateCertificate'])
-        ->get('/certificates/delete', [CertificationController::class, 'deleteCertificate']);
+        ->get('/certificates/delete', [CertificationController::class, 'deleteCertificate'])
+        ->post('/technologies/add', [TechnologiesController::class, 'addTechnology'])
+        ->post('/technologies/update', [TechnologiesController::class, 'updateTechnology'])
+        ->get('/technologies/delete', [TechnologiesController::class, 'deleteTechnology'])
+        ->post('/project-technologies/add', [ProjectTechnologiesController::class, 'addProjectTechnology'])
+        ->get('/project-technologies/delete', [ProjectTechnologiesController::class, 'deleteProjectTechnology']);
 
 ob_start();
 $router->resolve($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
@@ -91,5 +99,6 @@ if ($title === ''){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
         <script src="/script/script.js"></script>
         <script src="/script/helper.js"></script>
-
+        <script src="/script/sessionstorage.js"></script>
+        <script src="/script/filter.js"></script>
 </html>

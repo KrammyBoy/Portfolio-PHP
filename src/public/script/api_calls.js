@@ -17,3 +17,16 @@ function deleteExperience(id){
         window.location = `/certificates/delete?id=${id}`;
     }
 }
+
+function deleteTechnology(id){
+    if (confirm(`Are you sure you want to delete this technology[${id}]`)){
+        window.location = `/technologies/delete?id=${id}`;
+    }
+}
+
+
+function deleteProjectTechnology(id, technology_id){
+    if (confirm(`Are you sure you want to delete this technology[${id}]`)){
+        window.location = `/project-technologies/delete?id=${id}&technology_id=${technology_id}`;
+    }
+}

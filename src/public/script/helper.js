@@ -106,6 +106,12 @@ function interfaceModal(type, action=null){
     case 'certificates':
       showCertificatesModal(action);
       break;
+    case 'technologies':
+      showTechnologiesModal(action);
+      break;
+    case 'projtech':
+      showProjTechModal(action);
+      break;
     default:
       break;
   }
@@ -129,15 +135,61 @@ function getRowDataById(projectId) {
   }
   return null; // not found
 }
+function showProjTechModal(actions, id=null){
+  const modal = document.querySelector('.proj-tech-modal');
+
+  if (actions === 'add'){
+    modal.querySelector('.admin-modal-title').textContent = "Add Association";
+    modal.querySelector('form').setAttribute('action', '/project-technologies/add');
+    modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Association";
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
+  }
+}
+function showTechnologiesModal(actions, id=null){
+  const modal = document.querySelector('.technologies-modal');
+
+  if (actions === 'add'){
+    modal.querySelector('.admin-modal-title').textContent = "Add Technologies";
+    modal.querySelector('form').setAttribute('action', '/technologies/add');
+    modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Technology";
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
+  }
+  else  if (actions === 'update'){
+    let rowValues = getRowDataById(id);
+    modal.querySelector('.admin-modal-title').textContent = "Update Technology[" +rowValues[0] +"]";    
+
+    const form = modal.querySelector('form');
+    form.setAttribute('action', '/technologies/update');
+    form.querySelector('#name').value = rowValues[1];
+    form.querySelector('#boxicon').value = rowValues[2];
+    form.querySelector('#category').value = rowValues[3];
+
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
+
+    //Adding ID to input
+    const idHiddenField = document.createElement('input');
+    idHiddenField.id = 'id';
+    idHiddenField.type = 'hidden';
+    idHiddenField.name = 'id';
+    idHiddenField.value = rowValues[0];
+
+    form.appendChild(idHiddenField);    
+    
+    form.querySelector('#button-submit').textContent = 'Update Technology';
+  }
+}
 function showCertificatesModal(action, id=null){
   const modal = document.querySelector('.certificates-modal');
 
   if (action === 'add'){
-        modal.querySelector('.admin-modal-title').textContent = "Add Certificates";
-        modal.querySelector('form').setAttribute('action', '/certificates/add');
-        modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Certificates";
-        modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-        modal.style.display = 'flex';
+    modal.querySelector('.admin-modal-title').textContent = "Add Certificates";
+    modal.querySelector('form').setAttribute('action', '/certificates/add');
+    modal.querySelector('.modal-actions button[type="submit"]').textContent = "Add Certificates";
+    modal.style.animation = 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+    modal.style.display = 'flex';
 
   } else if (action === 'update') {
     let rowValues = getRowDataById(id);

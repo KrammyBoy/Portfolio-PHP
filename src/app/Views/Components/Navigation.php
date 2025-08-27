@@ -12,7 +12,9 @@
         <div class="content-overlay">
             <h1>Mark Danielle Salabsab</h1>
             <h2>Programmer</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, voluptatum exercitationem. Dignissimos, temporibus! Consectetur, quibusdam.</p>
+            <p>An aspiring BS Computer Science graduate of the University of Cebu - Main with a solid foundation in programming, software development and AI integration. 
+                Eager to apply my skills in real-world projects and contribute to innovative tech solutions.
+            </p>
         </div>
     </div>
 <?php endif; ?>

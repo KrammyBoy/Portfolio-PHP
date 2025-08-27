@@ -69,7 +69,6 @@ class Experience {
         $stmt = $this->pdo->prepare($query);
         $stmt->execute([":experience_type" => $experience_type]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        var_dump($result);
         return (float) $result['total_years'] ?? 0;
 
     }

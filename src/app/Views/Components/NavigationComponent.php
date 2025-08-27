@@ -14,5 +14,5 @@ if(!isset($_SESSION['admin_logged_in'])):
     <a href="/experiences" class="nav-link">Experiences</a>                    
     <a href="/certifications" class="nav-link">Certificates</a>
     <a href="/technologies" class="nav-link">Technologies</a>                    
-    <button class="logout" id="logoutBtn">Logout</button>
+    <button class="logout nav-link" id="logoutBtn">Logout</button>
 <?php endif; ?>

@@ -57,13 +57,48 @@ class ProjectTechnologies {
     }
 
     //Insert Methods
-    public function insertProjectTechnology(int $project_id, int $technology_id): void {
+    public function addProjectTechnology(array $data): bool {
         // Validate that project_id and technology_id are positive integers
-        if ($project_id <= 0 || $technology_id <= 0) {
-            throw new \InvalidArgumentException("Project ID and Technology ID must be positive integers.");
-        }
+        // array(2) { ["projects"]=> string(1) "1" ["technologies"]=> string(1) "5" } 
+        $this->pdo->beginTransaction();
 
-        // Additional logic to insert the project-technology relationship into the database
+        try{
+            $query = 
+            'INSERT INTO Project_Technologies(project_id, technology_id)
+             VALUES(:project_id, :technology_id)';
+            
+            $this->pdo->prepare($query)->execute(
+                [
+                    ':project_id' => $data['projects'],
+                    ':technology_id' => $data['technologies']
+                ]
+            );
+            $this->pdo->commit();
+            return true;
+        }catch(\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    //Deletion
+
+    public function deleteProjectTechnology(array $data): bool {
+        $this->pdo->beginTransaction();
+
+ 
+        try{
+            $query = 'DELETE FROM Project_Technologies WHERE project_id = :id AND technology_id = :technology_id';
+            $this->pdo->prepare($query)->execute([
+                ':id' => (int) $data['id'],
+                ':technology_id' => (int) $data['technology_id']
+            ]);
+            $this->pdo->commit();
+            return true;
+        }catch(\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
     }
 }
 ?>

@@ -73,12 +73,77 @@ class Technologies {
     }
 
     //Insert Methods 
-    public function insertTechnology(
-        string $technology_name,
-        string $boxicon,
-        string $category
-    ){
-        
+    public function insertTechnology(array $data): bool{
+        $this->pdo->beginTransaction();
+
+        try{
+            $query = 
+            'INSERT INTO Technologies(technology_name, boxicon, category) 
+            VALUES (:technology_name, :boxicon, :category)';
+
+            $this->pdo->prepare($query)->execute(
+                [
+                ':technology_name' => $data['name'],
+                ':boxicon' => $data['boxicon'],
+                ':category' => $data['category']
+                ]
+            );
+            $this->pdo->commit();
+            return true;
+        }catch (\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+    //Update
+    public function updateTechnology(array $data): bool {
+        $this->pdo->beginTransaction();
+
+        try{
+            $query = 
+            'UPDATE Technologies
+             SET technology_name = :technology_name,
+                 boxicon = :boxicon,
+                 category = :category
+             WHERE id = :id';
+
+            $this->pdo->prepare($query)->execute(
+                [
+                    ':technology_name' => $data['name'],
+                    ':boxicon' => $data['boxicon'],
+                    ':category' => $data['category'],
+                    ':id' => $data['id']
+                ]
+            );
+            $this->pdo->commit();
+            return true;
+        }catch(\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
+    }
+
+    //DELETING
+    public function deleteTechnology(int $id): bool {
+        $this->pdo->beginTransaction();
+
+        try{
+            $query = 
+            'DELETE FROM Technologies
+             WHERE id = :id';
+
+            $this->pdo->prepare($query)->execute(
+                [
+                    ':id' => $id
+                ]
+            );
+            
+            $this->pdo->commit();
+            return true;
+        } catch(\PDOException){
+            $this->pdo->rollBack();
+            return false;
+        }
     }
 
     

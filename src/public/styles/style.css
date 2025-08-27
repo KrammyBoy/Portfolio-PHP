@@ -155,12 +155,21 @@ a {
   border-radius: 20px;
   transition: all 0.3s ease;
   position: relative;
+  
 }
 
 .nav-link:hover,
 .nav-link.active {
   background: rgba(227, 175, 188, 0.2);
   color: var(--card-bg);
+}
+
+.logout {
+  text-decoration: none;
+  font-family: "Quicksand", sans-serif;
+  font-weight: 500;
+  color: var(--primary-bg); 
+  border: none;
 }
 
 /* Mobile Toggle */

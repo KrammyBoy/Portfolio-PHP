@@ -72,7 +72,6 @@ class Certificates {
     //Insert
     public function insertCertificate( array $data
     ): bool {
-        var_dump($data);
         $this->pdo->beginTransaction();
 
         try {
