@@ -45,6 +45,7 @@ class DBContext {
                     $dbName = getenv('PGDATABASE');
                     $dbUser = getenv('PGUSER');
                     $dbPass = getenv('PGPASSWORD');
+
                 } else {
                     $host   = getenv('DB_HOST')     ?: 'localhost';
                     $port   = getenv('DB_PORT')     ?: '5432';
@@ -52,6 +53,12 @@ class DBContext {
                     $dbUser = getenv('DB_USER')     ?: 'postgres';
                     $dbPass = getenv('DB_PASSWORD') ?: '';
                 }
+                    var_dump($host);
+                    var_dump($port);
+                    var_dump($dbName);
+                    var_dump($dbUser);
+                    var_dump($dbPass);
+                    exit();                
                 //Create the connection string
                 $dsn = "pgsql:host=$host;port=$port;dbname=$dbName";
 
@@ -59,7 +66,7 @@ class DBContext {
                 $settings = array_replace($this->options, $settings);
 
                 //Create a new PDO instance
-                $this->pdo = new PDO($dsn, $dbUser, $dbPass, $settings);
+                $this->pdo = new PDO($dsn, username: $dbUser, $dbPass, $settings);
 
             } catch (PDOException $e) {
                 throw new \RuntimeException(message: "Database connection failed: " . $e->getMessage());
