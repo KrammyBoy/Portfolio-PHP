@@ -14,7 +14,7 @@ WORKDIR /var/www
 COPY ./src/public /var/www/public
 
 # Copy nginx config
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY .docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose the Railway port
 EXPOSE 8080
