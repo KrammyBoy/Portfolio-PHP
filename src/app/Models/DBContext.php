@@ -53,6 +53,8 @@ class DBContext {
                     $dbUser = getenv('DB_USER')     ?: 'postgres';
                     $dbPass = getenv('DB_PASSWORD') ?: '';
                 }
+                var_dump(getenv('RAILWAY_SERVICE_NAME'));
+                    var_dump(getenv('DATABASE_URL'));
                     var_dump($host);
                     var_dump($port);
                     var_dump($dbName);
