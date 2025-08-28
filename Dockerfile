@@ -1,12 +1,16 @@
 FROM php:8.2-fpm
 
-# Install system dependencies
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     nginx \
     unzip \
     git \
     curl \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Install PostgreSQL PDO extension
+RUN docker-php-ext-install pdo pdo_pgsql
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -17,7 +21,7 @@ WORKDIR /var/www
 # Copy application files
 COPY src/ /var/www/
 
-# Install PHP dependencies
+# (Optional) Install PHP dependencies
 # RUN composer install --no-dev --optimize-autoloader
 
 # Configure Nginx
