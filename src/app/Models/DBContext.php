@@ -40,9 +40,7 @@ class DBContext {
             try {
                 //Check if the service is running on railway
                 if (getenv('RAILWAY_SERVICE_NAME')){
-                    $host   = getenv('PGHOST');
-                    $port   = getenv('PGPORT');
-                    $dbName = getenv('PGDATABASE');
+                    $dsn = getenv('DATABASE_URL');
                     $dbUser = getenv('PGUSER');
                     $dbPass = getenv('PGPASSWORD');
 
@@ -52,17 +50,9 @@ class DBContext {
                     $dbName = getenv('DB_NAME')     ?: 'postgres';
                     $dbUser = getenv('DB_USER')     ?: 'postgres';
                     $dbPass = getenv('DB_PASSWORD') ?: '';
-                }
-                var_dump(getenv('RAILWAY_SERVICE_NAME'));
-                    var_dump(getenv('DATABASE_URL'));
-                    var_dump($host);
-                    var_dump($port);
-                    var_dump($dbName);
-                    var_dump($dbUser);
-                    var_dump($dbPass);
-                    exit();                
-                //Create the connection string
-                $dsn = "pgsql:host=$host;port=$port;dbname=$dbName";
+
+                    $dsn = "pgsql:host=$host;port=$port;dbname=$dbName";
+                }   
 
                 //Replace the default options with the provided settings
                 $settings = array_replace($this->options, $settings);
