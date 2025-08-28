@@ -20,7 +20,7 @@ class AdminController {
         //Set Session for login to hide navigation
 
         //Check if the params is correct
-        if (!isset($_GET['password']) || $_GET['password'] !== $_ENV['ADMIN_PASSWORD']){
+        if (!isset($_GET['password']) || $_GET['password'] !== getenv('ADMIN_PASSWORD')){
             header('Location: /');
             exit();
         } else {
