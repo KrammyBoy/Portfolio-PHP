@@ -5,6 +5,7 @@ declare(strict_types= 1);
 namespace App\Models;
 use PDO;
 use PDOException;
+use Dotenv;
 
 // Singleton Implementation
 class DBContext {
@@ -37,12 +38,20 @@ class DBContext {
 
         if ($this->pdo === null){
             try {
-                $host = $_ENV['DB_HOST'] ?? 'localhost';
-                $port = $_ENV['DB_PORT'] ?? '';
-                $dbName = $_ENV['DB_NAME'] ?? 'postgres';
-                $dbUser = $_ENV['DB_USER'] ?? '';
-                $dbPass = $_ENV['DB_PASSWORD'] ?? '';
-
+                //Check if the service is running on railway
+                if (getenv('RAILWAY_SERVICE_NAME')){
+                    $host   = getenv('PGHOST');
+                    $port   = getenv('PGPORT');
+                    $dbName = getenv('PGDATABASE');
+                    $dbUser = getenv('PGUSER');
+                    $dbPass = getenv('PGPASSWORD');
+                } else {
+                    $host   = getenv('DB_HOST')     ?: 'localhost';
+                    $port   = getenv('DB_PORT')     ?: '5432';
+                    $dbName = getenv('DB_NAME')     ?: 'postgres';
+                    $dbUser = getenv('DB_USER')     ?: 'postgres';
+                    $dbPass = getenv('DB_PASSWORD') ?: '';
+                }
                 //Create the connection string
                 $dsn = "pgsql:host=$host;port=$port;dbname=$dbName";
 
@@ -53,7 +62,7 @@ class DBContext {
                 $this->pdo = new PDO($dsn, $dbUser, $dbPass, $settings);
 
             } catch (PDOException $e) {
-                throw new \RuntimeException("Database connection failed: " . $e->getMessage());
+                throw new \RuntimeException(message: "Database connection failed: " . $e->getMessage());
             }
         }
 
