@@ -20,4 +20,4 @@ COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 8080
 
 # Start PHP-FPM + Nginx
-CMD service php8.2-fpm start && nginx -g "daemon off;"
+CMD php-fpm -D && nginx -g "daemon off;"
