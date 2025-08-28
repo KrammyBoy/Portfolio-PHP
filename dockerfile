@@ -11,7 +11,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /var/www
 
 # Copy app
-COPY ./src /var/www
+COPY ./src/public /var/www/public
 
 # Copy nginx config
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
