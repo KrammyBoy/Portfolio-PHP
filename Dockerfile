@@ -15,10 +15,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 WORKDIR /var/www
 
 # Copy application files
-COPY . .
+COPY src/ /var/www/
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# RUN composer install --no-dev --optimize-autoloader
 
 # Configure Nginx
 COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
