@@ -66,7 +66,7 @@ class DBContext {
                 $settings = array_replace($this->options, $settings);
 
                 //Create a new PDO instance
-                $this->pdo = new PDO($dsn, username: $dbUser, $dbPass, $settings);
+                $this->pdo = new PDO($dsn, $dbUser, $dbPass, $settings);
 
             } catch (PDOException $e) {
                 throw new \RuntimeException(message: "Database connection failed: " . $e->getMessage());
