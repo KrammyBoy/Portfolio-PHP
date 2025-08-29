@@ -27,6 +27,9 @@ if (file_exists(__DIR__ . '/.env')) {
     $dotenv->load();
 }
 
+//Modify ini values
+ini_set('upload_max_filesize', '50M');
+ini_set('post_max_size', '50M');
 
 //Session
 session_start();
