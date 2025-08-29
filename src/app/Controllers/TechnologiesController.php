@@ -26,12 +26,6 @@ class TechnologiesController extends AdminSession {
             $projectTechnologies = $this->projectTechnologies->getTableWithProjectsAndTechnology();
             $projects = $this->projects->getProjects();
 
-            if(empty($allTechnologies) || empty($projectTechnologies)){
-                Toast::setToast('error', 'Something went wrong to the database');
-                header('Location: /technologies');
-                exit();
-            }
-
             View::render('Admin/Technologies', [
                 'allTechnologies' => $allTechnologies,
                 'projectTechnologies' => $projectTechnologies,
