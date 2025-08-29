@@ -223,10 +223,6 @@ class Projects {
         exit();
     }
     public function updateImage(array $data){
-            var_dump($_FILES);
-            var_dump($_FILES['image']['type']);
-            var_dump(FileType::checkValidType($_FILES['image']['type']));
-            exit();
             if(FileType::checkValidType($_FILES['image']['type'])){
                 $filename = $this->project_prefix . $data['id'] . FileType::getFileType($_FILES['image']['type']);
 
@@ -238,12 +234,8 @@ class Projects {
                         ':image' => $filename,
                         ':id' => $data['id'],
                     ]);
-                    var_dump(__DIR__);
-                    var_dump($filename);
                     //Check the image if it already exist
                     $filePath = __DIR__.'/../../public/assets/images/' . $filename;
-                    var_dump(file_exists($filePath));
-
                     exit();
                     if (file_exists($filePath)){
                         //Delete the image
