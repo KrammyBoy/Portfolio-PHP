@@ -236,7 +236,6 @@ class Projects {
                     ]);
                     //Check the image if it already exist
                     $filePath = __DIR__.'/../../public/assets/images/' . $filename;
-                    exit();
                     if (file_exists($filePath)){
                         //Delete the image
                         unlink(realpath($filePath));
