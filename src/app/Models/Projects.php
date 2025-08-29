@@ -239,14 +239,14 @@ class Projects {
                     if (file_exists($filePath)){
                         //Delete the image
                         unlink(realpath($filePath));
-                        //Move the new image
-                        if(move_uploaded_file($_FILES['image']['tmp_name'], $filePath)){
-                            $this->pdo->commit();                            
-                            Toast::setToast('success', 'Updated the image successfully');
-                            header('Location: /projects');
-                            exit();
-                        }
                     }
+                    //Move the new image
+                    if(move_uploaded_file($_FILES['image']['tmp_name'], $filePath)){
+                        $this->pdo->commit();                            
+                        Toast::setToast('success', 'Updated the image successfully');
+                        header('Location: /projects');
+                        exit();
+                    }       
                 } catch (\PDOException $e) {
                     $this->pdo->rollBack();
                     Toast::setToast('error', 'Something went wrong');
