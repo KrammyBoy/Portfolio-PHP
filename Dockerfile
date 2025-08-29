@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install -y \
 # Install PostgreSQL PDO extension
 RUN docker-php-ext-install pdo pdo_pgsql
 
+# PHP upload limits
+RUN echo "upload_max_filesize = 50M" >> /usr/local/etc/php/php.ini \
+    && echo "post_max_size = 50M" >> /usr/local/etc/php/php.ini
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
