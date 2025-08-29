@@ -234,9 +234,13 @@ class Projects {
                         ':image' => $filename,
                         ':id' => $data['id'],
                     ]);
-
+                    var_dump(__DIR__);
+                    var_dump($filename);
                     //Check the image if it already exist
                     $filePath = __DIR__.'/../../public/assets/images/' . $filename;
+                    var_dump(file_exists($filePath));
+
+                    exit();
                     if (file_exists($filePath)){
                         //Delete the image
                         unlink(realpath($filePath));
