@@ -223,6 +223,8 @@ class Projects {
         exit();
     }
     public function updateImage(array $data){
+            var_dump(FileType::checkValidType($_FILES['image']['type']));
+            exit();
             if(FileType::checkValidType($_FILES['image']['type'])){
                 $filename = $this->project_prefix . $data['id'] . FileType::getFileType($_FILES['image']['type']);
 
