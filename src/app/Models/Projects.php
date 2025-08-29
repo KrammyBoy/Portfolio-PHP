@@ -109,9 +109,11 @@ class Projects {
             Toast::setToast('error', 'Title and Description passed is longer than the maximum limit');
             header('Location: /projects');
             exit();
-        } //Check if file is not empty
+        } 
         $filePath = null;
-        if ($file){
+
+        //Check file if it has no error
+        if ($file['image']['error'] !== UPLOAD_ERR_NO_FILE){
             $filePath = $this->project_prefix . $this->getLastId() . FileType::getFileType($file['image']['type']);
         }
 
@@ -137,8 +139,8 @@ class Projects {
             ]);
 
             $this->pdo->commit();
-            //upload image to the server
-            if (!empty($file))  $this->uploadImage($file, $filePath);
+            //upload image to the server if a file is present
+            if ($file['image']['error'] !== UPLOAD_ERR_NO_FILE)  $this->uploadImage($file, $filePath);
             Toast::setToast('success', 'Added ' . $data['title'] . ' project to the database');
             header('Location: /projects');
             
