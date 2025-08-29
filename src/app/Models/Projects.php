@@ -236,6 +236,7 @@ class Projects {
                     ]);
                     //Check the image if it already exist
                     $filePath = __DIR__.'/../../public/assets/images/' . $filename;
+                    var_dump($filePath);
                     if (file_exists($filePath)){
                         //Delete the image
                         unlink(realpath($filePath));
@@ -246,7 +247,8 @@ class Projects {
                         Toast::setToast('success', 'Updated the image successfully');
                         header('Location: /projects');
                         exit();
-                    }       
+                    }
+                    exit();
                 } catch (\PDOException $e) {
                     $this->pdo->rollBack();
                     Toast::setToast('error', 'Something went wrong');
