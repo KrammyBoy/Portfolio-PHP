@@ -223,6 +223,8 @@ class Projects {
         exit();
     }
     public function updateImage(array $data){
+            var_dump($_FILES);
+            var_dump($_FILES['image']['type']);
             var_dump(FileType::checkValidType($_FILES['image']['type']));
             exit();
             if(FileType::checkValidType($_FILES['image']['type'])){
