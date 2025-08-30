@@ -8,7 +8,7 @@ use Dotenv\Exception\InvalidFileException;
 
 class FileHandler {
     public const CERTIFICATE = 'cert_file_';
-    public const PATH_TO_CERTIFICATE = __DIR__ . '/../../../public/assets/certificates/';
+    public const PATH_TO_CERTIFICATE = __DIR__ . '/../../../public/images/';
 
    public static function uploadCertificateFile(array $data){
     //Upload file
