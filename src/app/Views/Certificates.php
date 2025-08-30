@@ -25,7 +25,6 @@
                 // Check if type is a File
                 if($certificate['type'] === "File"){
                     $href = $asset_path . basename($href);
-                    var_dump($href);
                     // Ensure the file exists
                     if (!file_exists($href)) {
                         $href = '#'; // Fallback if file does not exist

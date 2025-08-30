@@ -105,7 +105,7 @@ class Projects {
 
     // Insert methods
     public function insertProject(array $data, array $file = []): void {
-        if (strlen($data['title']) > 48 || strlen($data['description']) > 255) {
+        if (strlen($data['title']) > 64 || strlen($data['description']) > 512) {
             Toast::setToast('error', 'Title and Description passed is longer than the maximum limit');
             header('Location: /projects');
             exit();
