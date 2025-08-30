@@ -31,12 +31,11 @@ COPY src/ /var/www/
 # Configure Nginx
 COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Change permission for images volume
-RUN chown -R www-data:www-data /var/www/public/assets/images \
-    && chmod -R 755 /var/www/public/assets/images
-
 # Expose Railway port
 EXPOSE 8080
 
 # Start PHP-FPM and Nginx together
-CMD php-fpm -D && nginx -g "daemon off;"
+CMD chown -R www-data:www-data /var/www/public/assets/images \
+    && chmod -R 755 /var/www/public/assets/images \
+    && php-fpm -D && nginx -g "daemon off;"
+
