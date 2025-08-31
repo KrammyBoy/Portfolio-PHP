@@ -92,7 +92,7 @@
         <!-- Contact Information -->
         <div class="dashboard-card contact-card">
             <?php 
-            $contactInformation = $dashboard['contactInformation'][0];
+            $contactInformation = $dashboard['contactInformation'][0] ?? null ;
             ?>
             <div class="card-title">Contact Information</div>
             <div class="contact-item">
@@ -101,7 +101,7 @@
                 </div>
                 <div>
                     <div style="font-weight: 600;">Email</div>
-                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['email']?></div>
+                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['email'] ?? null ?></div>
                 </div>
             </div>
             <div class="contact-item">
@@ -110,7 +110,7 @@
                 </div>
                 <div>
                     <div style="font-weight: 600;">Phone</div>
-                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['phone']?></div>
+                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['phone'] ?? null ?></div>
                 </div>
             </div>
             <div class="contact-item">
@@ -119,7 +119,7 @@
                 </div>
                 <div>
                     <div style="font-weight: 600;">Location</div>
-                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['location']?></div>
+                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['location'] ?? null ?></div>
                 </div>
             </div>
             <div class="contact-item">
@@ -128,7 +128,7 @@
                 </div>
                 <div>
                     <div style="font-weight: 600;">Response Time</div>
-                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['response_time']?> hours</div>
+                    <div style="opacity: 0.7; font-size: 0.9rem;"><?= $contactInformation['response_time'] ?? null ?> hours</div>
                 </div>
             </div>
             <button class="update-btn" onclick="interfaceModal('contact')">Update Contact Info</button>

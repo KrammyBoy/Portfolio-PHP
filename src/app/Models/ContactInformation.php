@@ -31,6 +31,13 @@ class ContactInformation {
         return $this->pdo->query('SELECT * FROM contactinformation')->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    //Check if something exists
+    public function checkDataExisting(): bool {
+        $count = $this->pdo->query('SELECT COUNT(*) FROM contactinformation')->fetchColumn();
+        
+        return $count >= 1 ? true: false;
+    }
+
 
 }
 

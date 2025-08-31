@@ -44,17 +44,20 @@ class Dashboard {
         $this->pdo->beginTransaction();
         
         try{
-            $query = "UPDATE ContactInformation SET email = :email, phone = :phone, location = :location, 
-            response_time = :response_time, updated_at = :updated_at WHERE id = 1";
 
-            $update_at = (new DateTime())->format("Y-m-d H:i:s");
+            if ($this->contactInformation->checkDataExisting()) {
+                $query = "UPDATE ContactInformation SET email = :email, phone = :phone, location = :location, 
+                response_time = :response_time, updated_at = NOW() WHERE id = 1";
+            } else {
+                $query = "INSERT INTO ContactInformation(email, phone, location, response_time, updated_at)
+                VALUES(:email, :phone, :location, :response_time, NOW())";
+            }
             $stmt = $this->pdo->prepare($query);
             $stmt->execute([
                 ":email" => $data['email'],
                 ":phone" => $data['phone'],
                 ":location" => $data['location'],
-                ":response_time" => $data['response'],
-                ':updated_at' => $update_at
+                ":response_time" => $data['response']
             ]);
 
             $this->pdo->commit();

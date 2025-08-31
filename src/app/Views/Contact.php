@@ -17,7 +17,7 @@
             <i class="bx bx-envelope"></i>
             <div class="contact-details">
               <h3>Email</h3>
-              <p>hello@yourname.com</p>
+              <p><?= htmlspecialchars($contact[0]['email']) ?></p>
             </div>
           </div>
 
@@ -25,7 +25,7 @@
             <i class="bx bx-phone"></i>
             <div class="contact-details">
               <h3>Phone</h3>
-              <p>+63 123 456 7890</p>
+              <p><?= htmlspecialchars($contact[0]['phone']) ?></p>
             </div>
           </div>
 
@@ -33,7 +33,7 @@
             <i class="bx bx-map"></i>
             <div class="contact-details">
               <h3>Location</h3>
-              <p>Cebu City, Philippines</p>
+              <p><?= htmlspecialchars($contact[0]['location']) ?></p>
             </div>
           </div>
 
@@ -41,7 +41,7 @@
             <i class="bx bx-stopwatch"></i>
             <div class="contact-details">
               <h3>Response Time</h3>
-              <p>Within 24 hours</p>
+              <p><?= htmlspecialchars($contact[0]['response_time']) ?></p>
             </div>
           </div>
         </div>
