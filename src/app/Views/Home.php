@@ -17,7 +17,7 @@ use App\Enums\StatusName;
                 <div class="projectEach">
                     <div class="project-image">
                         <?php if (!empty($project['image'])): ?>
-                            <img src="<?= 'assets/upload/images'.htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>"/>
+                            <img src="<?= 'assets/upload/images/'.htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>"/>
                         <?php endif; ?>
                     </div>
                     <div class="project-content">
