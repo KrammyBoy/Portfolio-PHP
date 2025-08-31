@@ -34,8 +34,12 @@ COPY docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 # Expose Railway port
 EXPOSE 8080
 
+# Create Directory for images/upload
+RUN mkdir -p /var/www/public/assets/upload/images \ 
+    && mkdir -p /var/www/public/assets/upload/certificates
+
 # Start PHP-FPM and Nginx together
-CMD chown -R www-data:www-data /var/www/public/assets/images \
-    && chmod -R 755 /var/www/public/assets/images \
+CMD chown -R www-data:www-data /var/www/public/assets/upload \
+    && chmod -R 755 /var/www/public/assets/upload \
     && php-fpm -D && nginx -g "daemon off;"
 

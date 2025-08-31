@@ -41,6 +41,7 @@ class Projects {
     private \DateTime|null $deleted_at;
 
     private string $project_prefix = 'proj_img_';
+    private const IMAGE_DIRECTORY = __DIR__ . '../../public/assets/upload/images/';
 
 
     public function __construct() {
@@ -156,8 +157,7 @@ class Projects {
         $fileTemp = $file['image']['tmp_name'];
 
         //Move upload
-        $directory = __DIR__ . '/../../public/assets/images/';
-        $finalName = $directory . $fileName;
+        $finalName = self::IMAGE_DIRECTORY . $fileName;
         if(move_uploaded_file($fileTemp, $finalName)){
             Toast::setToast('success','Added ' . $this->title . ' project to the database');
         }else {
@@ -235,8 +235,7 @@ class Projects {
                         ':id' => $data['id'],
                     ]);
                     //Check the image if it already exist
-                    $filePath = __DIR__.'/../../public/assets/images/' . $filename;
-                    var_dump($filePath);
+                    $filePath = self::IMAGE_DIRECTORY . $filename;
                     if (file_exists($filePath)){
                         //Delete the image
                         unlink(realpath($filePath));
@@ -247,8 +246,9 @@ class Projects {
                         Toast::setToast('success', 'Updated the image successfully');
                         header('Location: /projects');
                         exit();
+                    } else {
+                        throw new \PDOException();
                     }
-                    exit();
                 } catch (\PDOException $e) {
                     $this->pdo->rollBack();
                     Toast::setToast('error', 'Something went wrong');

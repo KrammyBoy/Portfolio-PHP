@@ -3,7 +3,7 @@
     <div class="footer-left">
       <div class="footer-name">Mark Salabsab</div>
       <a href="mailto:your.salabsabmarkdanielle@gmail.com" class="footer-email"
-        >salabsabmarkdanielle@example.com</a
+        >salabsabmarkdanielle@gmail.com</a
       >
     </div>
 
