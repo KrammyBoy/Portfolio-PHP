@@ -37,12 +37,15 @@ class ContactController{
 
             try {
                 $mail = new PHPMailer(true);
+                $mail->SMTPDebug = 2;
+                $mail->Debugoutput = 'error_log';
+
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'salabsamarkdanielle@gmail.com'; 
                 $mail->Password   = getenv('PHPMAILER'); // Gmail app password
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                 $mail->Port       = 587;
 
                 // From + To
