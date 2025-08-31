@@ -15,10 +15,10 @@ class ContactController{
     private ContactInformation $contactInformation;
 
     public function __construct(){
-        self::$contactInformation = new ContactInformation();
+        $this->contactInformation = new ContactInformation();
     }
     public function index(){
-        $contactInfo = self::$contactInformation->getContactInformation();
+        $contactInfo = $this->contactInformation->getContactInformation();
 
         View::render('Contact', ['contact' => $contactInfo]);
     }
