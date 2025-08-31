@@ -9,7 +9,6 @@
       <div class="info-card">
         <div class="info-header">
           <h2>Get In Touch</h2>
-          <p>Ready to start your next project?</p>
         </div>
 
         <div class="contact-methods">
@@ -53,7 +52,6 @@
       <div class="form-container">
         <div class="form-header">
           <h2>Send Message</h2>
-          <p>Tell me about your project</p>
         </div>
 
         <form class="contact-form" id="contactForm" action="/contact" method="POST">

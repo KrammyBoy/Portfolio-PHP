@@ -37,7 +37,7 @@ class ContactController{
 
             try {
                 $mail = new PHPMailer(true);
-                $mail->SMTPDebug = 2;
+                $mail->SMTPDebug = 3;
                 $mail->Debugoutput = 'error_log';
                 $mail->Timeout = 10;
 
