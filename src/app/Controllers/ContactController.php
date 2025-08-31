@@ -28,7 +28,7 @@ class ContactController{
 
         // Check if the request method is POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $contactInfo = self::$contactInformation->getContactInformation();
+            $contactInfo = $this->contactInformation->getContactInformation();
 
             $name = $_POST['name'] ?? '';
             $subject = $_POST['subject'] ?? '';
