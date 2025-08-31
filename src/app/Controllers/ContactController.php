@@ -39,6 +39,7 @@ class ContactController{
                 $mail = new PHPMailer(true);
                 $mail->SMTPDebug = 2;
                 $mail->Debugoutput = 'error_log';
+                $mail->Timeout = 10;
 
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
