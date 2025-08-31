@@ -33,19 +33,20 @@ class ContactController{
             $message = $_POST['message'] ?? '';
 
             $address = $contactInfo[0]['email']; // your Gmail
+            var_dump($address);
 
             try {
                 $mail = new PHPMailer(true);
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = $address; 
+                $mail->Username   = 'salabsamarkdanielle@gmail.com'; 
                 $mail->Password   = getenv('PHPMAILER'); // Gmail app password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port       = 587;
 
                 // From + To
-                $mail->setFrom($address, 'Portfolio Mail');
+                $mail->setFrom('salabsabmarkdanielle@gmail.com', 'Portfolio Mail');
                 $mail->addAddress($address, 'Mark Danielle');
 
                 // Content
