@@ -24,9 +24,7 @@ class ContactController{
     }
     //When dealing with POST
     //WE follow Post -> Redirect -> Get Pattern
-    public function sendMessage(){
-
-        // Check if the request method is POST
+    public function sendMessage() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $contactInfo = $this->contactInformation->getContactInformation();
 
@@ -34,39 +32,41 @@ class ContactController{
             $subject = $_POST['subject'] ?? '';
             $message = $_POST['message'] ?? '';
 
-            $address = $contactInfo[0]['email'];
+            $address = $contactInfo[0]['email']; // your Gmail
 
             try {
                 $mail = new PHPMailer(true);
-                //Message using PHPmailer using noreply
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
-                //Gmail account
-                $mail->Username   = $address; //gmail
-                $mail->Password   = getenv('PHPMAILER');
+                $mail->Username   = $address; 
+                $mail->Password   = getenv('PHPMAILER'); // Gmail app password
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port       = 587;
 
-                $mail->setFrom('noreply@yourdomain.com', 'Portfolio Mail');
+                // From + To
+                $mail->setFrom($address, 'Portfolio Mail');
                 $mail->addAddress($address, 'Mark Danielle');
-                //Content
+
+                // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Portfolio | ' . $subject;
-                $mail->Body    = '<h4>From: ' . $name .'</h4> <br><p>'. $message .'</p>';
-                
-                //TODO Just Wait
+                $mail->Body    = '<h4>From: ' . htmlspecialchars($name) . '</h4><br><p>' 
+                                . nl2br(htmlspecialchars($message)) . '</p>';
+
                 $mail->send();
+                $mail->smtpClose();
+
                 Toast::setToast('success', 'Message sent successfully');
-            }catch (Exception $e) {
-                Toast::setToast('error', 'Something wrong happened');
+            } catch (Exception $e) {
+                Toast::setToast('error', 'Mailer Error: ' . $mail->ErrorInfo);
             }
-            $mail->smtpClose();
 
             header("Location: /");
             exit();
-        }        
+        }
     }
+
 }
 
 ?>
