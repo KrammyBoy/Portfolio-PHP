@@ -43,7 +43,7 @@ class Projects {
     private \DateTime|null $deleted_at;
 
     private string $project_prefix = 'proj_img_';
-    private const IMAGE_DIRECTORY = __DIR__ . '../../public/assets/upload/images/';
+    private const IMAGE_DIRECTORY = __DIR__ . '/../../public/assets/upload/images/';
 
 
     public function __construct() {
