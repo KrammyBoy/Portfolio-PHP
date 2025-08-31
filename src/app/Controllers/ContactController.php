@@ -42,15 +42,15 @@ class ContactController{
                 $mail->Timeout = 10;
 
                 $mail->isSMTP();
-                $mail->Host       = 'smtp.gmail.com';
+                $mail->Host       = 'smtp.sendgrid.net';
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'salabsamarkdanielle@gmail.com'; 
-                $mail->Password   = getenv('PHPMAILER'); // Gmail app password
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Username   = 'apikey'; 
+                $mail->Password   = getenv('SENDGRID'); // Gmail app password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port       = 587;
 
                 // From + To
-                $mail->setFrom('salabsabmarkdanielle@gmail.com', 'Portfolio Mail');
+                $mail->setFrom('noreply@yourdomain.com', 'Portfolio Mail');
                 $mail->addAddress($address, 'Mark Danielle');
 
                 // Content
