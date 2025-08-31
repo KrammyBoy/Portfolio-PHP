@@ -48,7 +48,7 @@ $projectInformation = (new Projects())->getGroupedStatusCount();
     <div class="projectEach">
       <div class="project-image">
         <?php if (!empty($project['image'])): ?>
-            <img src="<?= 'assets/images/'.htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>" />
+            <img src="<?= 'assets/upload/images/'.htmlspecialchars($project['image']) ?>" alt="<?= htmlspecialchars($project['image']) ?>" />
         <?php endif; ?>
       </div>
       <div class="project-content">

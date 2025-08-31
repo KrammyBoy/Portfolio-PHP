@@ -36,7 +36,7 @@ use App\Enums\StatusName;
                         ?>
                             <?= htmlspecialchars('null')?>
                         <?php else: ?>
-                            <img src="<?= htmlspecialchars('assets/images/'.$project['image'])?>" style="width: 50px; height:50px object-fit:contain">
+                            <img src="<?= htmlspecialchars('assets/upload/images/'.$project['image'])?>" style="width: 50px; height:50px object-fit:contain">
                         <?php endif; ?>
                         </td>
                         <td><?= htmlspecialchars($project['title'])?></td>

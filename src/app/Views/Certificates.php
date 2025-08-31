@@ -20,7 +20,7 @@
                 <span class="cert-date"><?= htmlspecialchars($date_earned->format('M d Y'))?></span>
                 <?php
 
-                $asset_path = 'assets/images/';
+                $asset_path = 'assets/upload/certificates/';
                 $href = htmlspecialchars($certificate['credential_url']);
                 // Check if type is a File
                 if($certificate['type'] === "File"){
