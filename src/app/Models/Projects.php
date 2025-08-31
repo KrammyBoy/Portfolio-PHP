@@ -7,6 +7,8 @@ namespace App\Models;
 use PDO;
 use App\Helper\Toast;
 use App\Enums\FileType;
+use Dotenv\Exception\InvalidFileException;
+
 
 /**
  * Class Projects
@@ -247,7 +249,8 @@ class Projects {
                         header('Location: /projects');
                         exit();
                     } else {
-                        throw new \PDOException();
+                        throw new InvalidFileException("File Handler: Failed to move uploaded file.");
+
                     }
                 } catch (\PDOException $e) {
                     $this->pdo->rollBack();
