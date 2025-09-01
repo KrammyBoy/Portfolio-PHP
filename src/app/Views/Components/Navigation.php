@@ -22,7 +22,11 @@
 <nav class="navbar">
     <div class="nav-container">
         <button class="download-btn" <?= isset($_SESSION['admin_logged_in']) ? 'disabled' : '' ?>>
-            <span><?= isset($_SESSION['admin_logged_in']) ? 'Admin' : 'Download CV' ?></span>
+            <?php if (isset($_SESSION['admin_logged_in'])): ?>
+                <a href="/dashboard">Admin</a>
+            <?php else: ?>
+                <a href="assets/Salabsab-Resume.pdf" target="_blank" download>Download CV</a>
+            <?php endif; ?>
         </button>
 
         <div class="nav-links">
